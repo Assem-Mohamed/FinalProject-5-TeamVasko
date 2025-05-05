@@ -2,6 +2,7 @@ package com.collabboard.models;
 
 import com.collabboard.enums.Status;
 import com.collabboard.enums.Priority;
+import com.collabboard.enums.TaskType;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -24,6 +25,9 @@ public class Task {
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.TODO;
+
+    @Enumerated(EnumType.STRING)
+    private TaskType taskType;
 
     // Just a list of user IDs from User Service
     @ElementCollection
@@ -93,6 +97,14 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public TaskType getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(TaskType taskType) {
+        this.taskType = taskType;
     }
 
     public Set<Long> getAssigneeIds() {
