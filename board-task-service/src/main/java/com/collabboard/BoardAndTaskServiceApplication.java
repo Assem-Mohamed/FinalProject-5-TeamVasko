@@ -1,4 +1,4 @@
-package com.collabboard.board_task_service;
+package com.collabboard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
