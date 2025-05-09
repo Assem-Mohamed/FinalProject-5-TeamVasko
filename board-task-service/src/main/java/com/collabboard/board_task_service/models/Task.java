@@ -1,8 +1,8 @@
-package com.collabboard.models;
+package com.collabboard.board_task_service.models;
 
-import com.collabboard.enums.Status;
-import com.collabboard.enums.Priority;
-import com.collabboard.enums.TaskType;
+import com.collabboard.board_task_service.TaskType;
+import com.collabboard.board_task_service.enums.Status;
+import com.collabboard.board_task_service.enums.Priority;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -99,11 +99,11 @@ public class Task {
         this.status = status;
     }
 
-    public TaskType getTaskType() {
+    public com.collabboard.board_task_service.enums.TaskType getTaskType() {
         return taskType;
     }
 
-    public void setTaskType(TaskType taskType) {
+    public void setTaskType(com.collabboard.board_task_service.enums.TaskType taskType) {
         this.taskType = taskType;
     }
 
