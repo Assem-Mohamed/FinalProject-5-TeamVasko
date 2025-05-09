@@ -37,59 +37,43 @@ services:
   # User Service Instances
   user-service1:
     build: ./user-service
-    environment:
-      - SERVER_PORT=8080
     ports:
       - "8083:8080"
 
   user-service2:
     build: ./user-service
-    environment:
-      - SERVER_PORT=8080
     ports:
       - "8084:8080"
 
   # Comment & Log Service Instances
   comment-log-service1:
     build: ./comment-log-service
-    environment:
-      - SERVER_PORT=8080
     ports:
       - "8085:8080"
 
   comment-log-service2:
     build: ./comment-log-service
-    environment:
-      - SERVER_PORT=8080
     ports:
       - "8086:8080"
 
   # Notification Service Instances
   notification-service1:
     build: ./notification-service
-    environment:
-      - SERVER_PORT=8080
     ports:
       - "8087:8080"
 
   notification-service2:
     build: ./notification-service
-    environment:
-      - SERVER_PORT=8080
     ports:
       - "8088:8080"
 
   # Search Service Instances
   search-service1:
     build: ./search-service
-    environment:
-      - SERVER_PORT=8080
     ports:
       - "8089:8080"
 
   search-service2:
     build: ./search-service
-    environment:
-      - SERVER_PORT=8080
     ports:
       - "8090:8080"
