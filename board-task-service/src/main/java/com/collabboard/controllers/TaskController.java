@@ -1,9 +1,7 @@
 package com.collabboard.controllers;
 
 import com.collabboard.builders.TaskBuilder;
-import com.collabboard.dto.TaskRequestDTO;
 import com.collabboard.enums.Priority;
-import com.collabboard.enums.TaskType;
 import com.collabboard.factories.TaskFactory;
 import com.collabboard.models.Task;
 import com.collabboard.services.TaskService;
@@ -11,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -22,26 +21,26 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    // Create task using factory + builder from raw Task input
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody TaskRequestDTO request) {
-        Task task = TaskFactory.createTask(request.getType());
-        Priority priority = Priority.valueOf(request.getPriority());
+    public ResponseEntity<Task> createTask(@RequestBody Task input) {
+        // Use the factory to set defaults based on task type
+        Task base = TaskFactory.createTask(input.getTaskType());
 
-        task = new TaskBuilder()
-                .withTitle(request.getTitle())
-                .withDescription(request.getDescription())
-                .withDueDate(request.getDueDate())
-                .withPriority(priority)
-                .withStatus(request.getStatus())
-                .withAssigneeIds(request.getAssigneeIds())
-                .withCreatedBy(request.getCreatedBy())
-                .withType(request.getType())
+        // Use builder to create the final Task with user input + defaults
+        Task task = new TaskBuilder()
+                .withTitle(input.getTitle())
+                .withDescription(input.getDescription())
+                .withDueDate(input.getDueDate())
+                .withPriority(input.getPriority() != null ? input.getPriority() : base.getPriority())
+                .withStatus(input.getStatus() != null ? input.getStatus() : base.getStatus())
+                .withAssigneeIds(input.getAssigneeIds() != null ? input.getAssigneeIds() : Set.of())
+                .withCreatedBy(input.getCreatedBy())
+                .withType(input.getTaskType())
                 .build();
 
-        Task saved = taskService.createTask(task);
-        return ResponseEntity.ok(saved);
+        return ResponseEntity.ok(taskService.createTask(task));
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Task> update(@PathVariable Long id, @RequestBody Task task) {
@@ -66,16 +65,16 @@ public class TaskController {
 
     @PostMapping("/{id}/assign")
     public ResponseEntity<Task> assignUsers(@PathVariable Long id, @RequestBody List<Long> userIds) {
-        return ResponseEntity.ok(taskService.assignUsers(id, userIds));
+        return ResponseEntity.ok(taskService.assignUsers(id, Set.copyOf(userIds)));
     }
 
     @PutMapping("/{id}/priority")
     public ResponseEntity<Task> updatePriority(@PathVariable Long id, @RequestBody String priority) {
-        return ResponseEntity.ok(taskService.updatePriority(id, priority));
+        return ResponseEntity.ok(taskService.updatePriority(id, Priority.valueOf(priority)));
     }
 
     @PutMapping("/{id}/duedate")
     public ResponseEntity<Task> updateDueDate(@PathVariable Long id, @RequestBody String dueDate) {
-        return ResponseEntity.ok(taskService.updateDueDate(id, dueDate));
+        return ResponseEntity.ok(taskService.updateDueDate(id, LocalDate.parse(dueDate)));
     }
 }
