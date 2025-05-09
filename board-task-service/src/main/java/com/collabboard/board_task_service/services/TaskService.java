@@ -1,12 +1,12 @@
-package com.collabboard.services;
+package com.collabboard.board_task_service.services;
 
-import com.collabboard.enums.Priority;
-import com.collabboard.enums.Status;
-import com.collabboard.enums.TaskType;
-import com.collabboard.models.Task;
-import com.collabboard.patterns.builder.TaskBuilder;
-import com.collabboard.patterns.factory.TaskFactory;
-import com.collabboard.repositories.TaskRepository;
+import com.collabboard.board_task_service.enums.Priority;
+import com.collabboard.board_task_service.enums.Status;
+import com.collabboard.board_task_service.enums.TaskType;
+import com.collabboard.board_task_service.models.Task;
+import com.collabboard.builder.TaskBuilder;
+import com.collabboard.factory.TaskFactory;
+import com.collabboard.board_task_service.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

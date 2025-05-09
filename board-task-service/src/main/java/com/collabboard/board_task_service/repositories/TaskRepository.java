@@ -1,6 +1,6 @@
-package com.collabboard.repositories;
+package com.collabboard.board_task_service.repositories;
 
-import com.collabboard.models.Task;
+import com.collabboard.board_task_service.models.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
