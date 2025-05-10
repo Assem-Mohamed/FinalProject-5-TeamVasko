@@ -1,9 +1,7 @@
 package com.collabboard.board_task_service.controllers;
 
-import com.collabboard.board_task_service.builders.TaskBuilder;
 import com.collabboard.board_task_service.enums.Priority;
 import com.collabboard.board_task_service.enums.TaskType;
-import com.collabboard.board_task_service.factories.TaskFactory;
 import com.collabboard.board_task_service.models.Task;
 import com.collabboard.board_task_service.services.TaskService;
 import org.springframework.http.ResponseEntity;
@@ -24,22 +22,13 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        Task built = TaskFactory.createTask(task.getTaskType());
-
-        Task finalTask = new TaskBuilder()
-                .withTitle(task.getTitle())
-                .withDescription(task.getDescription())
-                .withDueDate(task.getDueDate())
-                .withPriority(task.getPriority() != null ? task.getPriority() : built.getPriority())
-                .withStatus(task.getStatus() != null ? task.getStatus() : built.getStatus())
-                .withAssigneeIds(task.getAssigneeIds())
-                .withCreatedBy(task.getCreatedBy())
-                .withType(task.getTaskType())
-                .build();
-
-        Task saved = taskService.createTask(finalTask);
-        return ResponseEntity.ok(saved);
+    public ResponseEntity<Task> createTaskWithDesignPatterns(
+            @RequestParam TaskType type,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String description,
+            @RequestParam Long createdBy) {
+        Task task = taskService.createTaskWithDesignPatterns(type, title, description, createdBy);
+        return ResponseEntity.ok(task);
     }
 
     @PutMapping("/{id}")
