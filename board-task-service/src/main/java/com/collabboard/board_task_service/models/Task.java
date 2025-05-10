@@ -1,6 +1,6 @@
 package com.collabboard.board_task_service.models;
 
-import com.collabboard.board_task_service.TaskType;
+import com.collabboard.board_task_service.enums.TaskType;
 import com.collabboard.board_task_service.enums.Status;
 import com.collabboard.board_task_service.enums.Priority;
 import jakarta.persistence.*;
