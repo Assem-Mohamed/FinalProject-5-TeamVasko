@@ -40,4 +40,6 @@ public class UserController {
         boolean success = userService.resetPassword(request.get("email"), request.get("newPassword"));
         return success ? ResponseEntity.ok("Password reset successful") : ResponseEntity.badRequest().body("User not found");
     }
+
+
 }
