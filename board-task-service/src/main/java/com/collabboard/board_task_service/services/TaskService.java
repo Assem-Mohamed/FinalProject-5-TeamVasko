@@ -1,0 +1,161 @@
+package com.collabboard.board_task_service.services;
+
+import com.collabboard.board_task_service.enums.Priority;
+import com.collabboard.board_task_service.enums.Status;
+import com.collabboard.board_task_service.enums.TaskType;
+import com.collabboard.board_task_service.models.Task;
+import com.collabboard.board_task_service.rabbitmq.NotificationMessage;
+import com.collabboard.board_task_service.rabbitmq.RabbitMQProducer;
+import com.collabboard.builder.TaskBuilder;
+import com.collabboard.factory.TaskFactory;
+import com.collabboard.board_task_service.repositories.TaskRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+
+import java.time.LocalDate;
+import java.util.*;
+
+
+@Service
+public class TaskService {
+
+    @Autowired
+    private TaskRepository taskRepository;
+
+    @Autowired
+    private RabbitMQProducer rabbitMQProducer;
+
+    public Task createTask(Task task) {
+        return taskRepository.save(task);
+    }
+
+    // Read all tasks
+    public List<Task> getAllTasks() {
+        return taskRepository.findAll();
+    }
+
+    // Read single task by ID
+    public Optional<Task> getTaskById(Long id) {
+        return taskRepository.findById(id);
+    }
+
+    // Update an existing task
+    public Task updateTask(Long id, Task updatedTask) {
+        return taskRepository.findById(id).map(existingTask -> {
+            if (updatedTask.getTitle() != null)
+                existingTask.setTitle(updatedTask.getTitle());
+            if (updatedTask.getDescription() != null)
+                existingTask.setDescription(updatedTask.getDescription());
+            if (updatedTask.getDueDate() != null)
+                existingTask.setDueDate(updatedTask.getDueDate());
+            if (updatedTask.getPriority() != null)
+                existingTask.setPriority(updatedTask.getPriority());
+            if (updatedTask.getStatus() != null)
+                existingTask.setStatus(updatedTask.getStatus());
+            if (updatedTask.getAssigneeIds() != null && !updatedTask.getAssigneeIds().isEmpty())
+                existingTask.setAssigneeIds(updatedTask.getAssigneeIds());
+            if (updatedTask.getTaskType() != null)
+                existingTask.setTaskType(updatedTask.getTaskType());
+            if (updatedTask.getCreatedBy() != null)
+                existingTask.setCreatedBy(updatedTask.getCreatedBy());
+
+            Task saved = taskRepository.save(existingTask);
+
+            notifyAssignees(saved, "Notification: task \"" + saved.getTitle() + "\" has been updated, please check it");
+            return saved;
+        }).orElseThrow(() -> new NoSuchElementException("Task not found with id " + id));
+    }
+
+    // Delete task
+    public void deleteTask(Long id) {
+        taskRepository.deleteById(id);
+    }
+
+    // Assign users to a task
+    public Task assignUsers(Long taskId, Set<Long> userIds) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new NoSuchElementException("Task not found"));
+        task.getAssigneeIds().addAll(userIds);
+        return taskRepository.save(task);
+    }
+
+    // Update due date
+    public Task updateDueDate(Long taskId, LocalDate newDueDate) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new NoSuchElementException("Task not found"));
+
+        task.setDueDate(newDueDate);
+        Task saved = taskRepository.save(task);
+
+        notifyAssignees(saved, "Notification: task \"" + saved.getTitle() + "\" due date has been updated to " + newDueDate);
+        return saved;
+    }
+
+
+    // Update priority
+    public Task updatePriority(Long taskId, Priority newPriority) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new NoSuchElementException("Task not found"));
+
+        task.setPriority(newPriority);
+        Task saved = taskRepository.save(task);
+
+        notifyAssignees(saved, "Notification: task \"" + saved.getTitle() + "\" priority has been updated to " + newPriority);
+        return saved;
+    }
+
+    public Task addDueDateIfMissing(Long taskId, LocalDate dueDate) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new NoSuchElementException("Task not found"));
+
+        if (task.getDueDate() == null) {
+            task.setDueDate(dueDate);
+            Task saved = taskRepository.save(task);
+
+            notifyAssignees(saved, "Notification: task \"" + saved.getTitle() + "\" has been given a new due date: " + dueDate);
+            return saved;
+        }
+
+        return task; // no change
+    }
+
+    // Send notification to assigned users (via external service)
+    public void notifyAssignees(Task task, String message) {
+        task.getAssigneeIds().forEach(userId ->
+                rabbitMQProducer.sendNotification(new NotificationMessage(userId, message))
+        );
+    }
+
+
+    @Scheduled(cron = "0 0 8 * * *") // every day at 8 AM
+    public void sendDeadlineReminders() {
+        LocalDate today = LocalDate.now();
+        List<Task> tasks = taskRepository.findAll();
+
+        for (Task task : tasks) {
+            if (task.getDueDate() == null) continue;
+            if (!EnumSet.of(Status.TODO, Status.IN_PROGRESS, Status.REVIEW).contains(task.getStatus())) continue;
+
+            if (task.getDueDate().equals(today.plusDays(3))) {
+                notifyAssignees(task, "Reminder: task \"" + task.getTitle() + "\" deadline is in less than 3 days");
+            }
+        }
+    }
+
+    // Create task using factory + builder
+    public Task createTaskWithFactoryAndBuilder(TaskType type, String title, String description, Long createdBy) {
+        Task base = TaskFactory.createTask(type);
+        Task task = new TaskBuilder()
+                .setTaskType(type)
+                .setTitle(title)
+                .setDescription(description)
+                .setCreatedBy(createdBy)
+                .setPriority(base.getPriority())
+                .setStatus(base.getStatus())
+                .build();
+        return taskRepository.save(task);
+    }
+
+}
