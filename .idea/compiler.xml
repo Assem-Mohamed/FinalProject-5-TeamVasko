@@ -16,6 +16,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="board-task-service" options="-parameters" />
       <module name="comment-log-service" options="-parameters" />
+
       <module name="notification-service" options="-parameters" />
     </option>
   </component>

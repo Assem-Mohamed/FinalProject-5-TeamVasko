@@ -4,6 +4,17 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
+        <option value="$PROJECT_DIR$/notification-service/notification-service/pom.xml" />
+        <option value="$PROJECT_DIR$/notification-service/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/notification-service/notification-service/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="openjdk-24" project-jdk-type="JavaSDK">
         <option value="$PROJECT_DIR$/board-task-service/pom.xml" />
         <option value="$PROJECT_DIR$/comment-log-service/pom.xml" />
         <option value="$PROJECT_DIR$/notification-service/pom.xml" />
@@ -11,6 +22,7 @@
     </option>
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="23" project-jdk-type="JavaSDK">
+
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
