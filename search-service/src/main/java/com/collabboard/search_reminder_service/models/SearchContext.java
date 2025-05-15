@@ -1,6 +1,6 @@
 package com.collabboard.search_reminder_service.models;
 
-import com.collabboard.search_reminder_service.Clients.TaskDTO;
+import org.example.TaskDTO;
 import com.collabboard.search_reminder_service.search.strategy.SearchStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 

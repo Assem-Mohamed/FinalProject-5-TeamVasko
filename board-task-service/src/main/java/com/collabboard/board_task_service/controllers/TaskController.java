@@ -4,14 +4,17 @@ import com.collabboard.board_task_service.builders.TaskBuilder;
 import com.collabboard.board_task_service.enums.Priority;
 import com.collabboard.board_task_service.enums.TaskType;
 import com.collabboard.board_task_service.factories.TaskFactory;
+import com.collabboard.board_task_service.mapper.TaskMapper;
 import com.collabboard.board_task_service.models.Task;
 import com.collabboard.board_task_service.services.TaskService;
+import org.example.TaskDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -84,4 +87,13 @@ public class TaskController {
     public ResponseEntity<Task> addDueDateIfMissing(@PathVariable Long id, @RequestBody LocalDate dueDate) {
         return ResponseEntity.ok(taskService.addDueDateIfMissing(id, dueDate));
     }
+
+    @GetMapping("/user/{userId}")
+    public List<TaskDTO> getTasksByUser(@PathVariable Long userId) {
+        List<Task> tasks = taskService.getTasksByUserId(userId);
+        return tasks.stream()
+                .map(TaskMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.collabboard.search_reminder_service.search.strategy;
 
-import com.collabboard.search_reminder_service.Clients.TaskDTO;
-import com.collabboard.search_reminder_service.models.SearchRequest;
+import org.example.TaskDTO;import com.collabboard.search_reminder_service.models.SearchRequest;
 
 
 import org.springframework.stereotype.Component;

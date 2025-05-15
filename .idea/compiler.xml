@@ -9,6 +9,7 @@
         <module name="board-task-service" />
         <module name="comment-log-service" />
         <module name="user-service" />
+        <module name="common-dto" />
         <module name="notification-service" />
         <module name="search-service" />
       </profile>

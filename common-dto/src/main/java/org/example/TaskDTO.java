@@ -1,20 +1,21 @@
-package com.collabboard.search_reminder_service.Clients;
+package org.example;
 
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
-public class TaskDTO {
+public class TaskDTO implements Serializable {
     private Long id;
     private String title;
     private String description;
     private LocalDate dueDate;
-    private String priority;
-    private String assignee;
+    private Priority priority;
+    private Set<Long> assignees;
 
-    public TaskDTO(String title, String description, LocalDate dueDate, String priority, String assignee) {
+    public TaskDTO(String title, String description, LocalDate dueDate, Priority priority, Set<Long> assignees) {
     }
 
-    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -48,20 +49,20 @@ public class TaskDTO {
         this.dueDate = dueDate;
     }
 
-    public String getPriority() {
+    public Priority getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(Priority priority) {
         this.priority = priority;
     }
 
-    public String getAssignee() {
-        return assignee;
+    public Set<Long> getAssignees() {
+        return assignees;
     }
 
-    public void setAssignee(String assignee) {
-        this.assignee = assignee;
+    public void setAssignees(Set<Long> assignees) {
+        this.assignees = assignees;
     }
 }
 

@@ -1,6 +1,9 @@
 package com.collabboard.search_reminder_service.models;
 
+
+import org.example.TaskDTO;
 import java.time.LocalDate;
+import java.util.List;
 
 public class SearchRequest {
     private Long userId;
@@ -9,6 +12,7 @@ public class SearchRequest {
     private String priority;
     private String assignee;
     private String sortBy;
+    private List<TaskDTO> tasks;
 
     // Getters and Setters
     public String getFullText() { return fullText; }
@@ -28,5 +32,13 @@ public class SearchRequest {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public List<TaskDTO> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<TaskDTO> tasks) {
+        this.tasks = tasks;
     }
 }

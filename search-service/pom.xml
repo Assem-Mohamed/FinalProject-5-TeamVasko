@@ -54,6 +54,12 @@
 
 		</dependency>
 		<dependency>
+			<groupId>org.example</groupId>
+			<artifactId>common-dto</artifactId>
+			<version>1.0-SNAPSHOT</version> <!-- use your actual version -->
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
