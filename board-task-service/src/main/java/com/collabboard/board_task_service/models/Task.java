@@ -2,7 +2,6 @@ package com.collabboard.board_task_service.models;
 
 import com.collabboard.board_task_service.enums.TaskType;
 import com.collabboard.board_task_service.enums.Status;
-import org.example.*;
 import jakarta.persistence.*;
 import org.example.Priority;
 

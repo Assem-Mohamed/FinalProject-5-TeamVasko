@@ -1,5 +1,6 @@
 package com.collabboard.board_task_service.factories;
-import com.collabboard.board_task_service.enums.Priority;
+import org.example.Priority;
+
 
 public class FeatureTask implements BaseTask {
     @Override
