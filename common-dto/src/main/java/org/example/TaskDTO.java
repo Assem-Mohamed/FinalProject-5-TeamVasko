@@ -65,4 +65,3 @@ public class TaskDTO implements Serializable {
         this.assignees = assignees;
     }
 }
-

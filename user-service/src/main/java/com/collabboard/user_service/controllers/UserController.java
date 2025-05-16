@@ -1,5 +1,6 @@
 package com.collabboard.user_service.controllers;
 
+
 import com.collabboard.search_reminder_service.models.SearchRequest;
 import com.collabboard.user_service.Clients.SearchClient;
 import com.collabboard.user_service.Clients.TaskClient;
@@ -8,6 +9,7 @@ import com.collabboard.user_service.repositories.UserRepository;
 import com.collabboard.user_service.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.example.TaskDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,7 @@ public class UserController {
 
     private final UserService userService;
 
+
     @Autowired private TaskClient taskClient;
     @Autowired private SearchClient searchClient;
 
@@ -33,6 +36,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Map<String, String> request) {
+        boolean success = userService.login(request.get("email"), request.get("password"));
+        return success ? ResponseEntity.ok("Login successful") : ResponseEntity.status(401).body("Invalid credentials");
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestBody Map<String, String> request) {
+        userService.logout(request.get("email"));
     public ResponseEntity<String> login(@RequestBody Map<String, String> request, HttpSession session) {
         String email = request.get("email");
         String password = request.get("password");
@@ -50,6 +61,7 @@ public class UserController {
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpSession session) {
         session.invalidate(); // Ends the session
+
         return ResponseEntity.ok("Logged out successfully");
     }
 
@@ -58,6 +70,7 @@ public class UserController {
         boolean success = userService.resetPassword(request.get("email"), request.get("newPassword"));
         return success ? ResponseEntity.ok("Password reset successful") : ResponseEntity.badRequest().body("User not found");
     }
+
 
     @PostMapping("/search")
     public List<TaskDTO> searchTasks(@RequestBody String keyword, HttpSession session) {

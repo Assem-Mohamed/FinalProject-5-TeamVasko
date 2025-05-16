@@ -2,9 +2,9 @@ package com.collabboard.board_task_service.models;
 
 import com.collabboard.board_task_service.enums.TaskType;
 import com.collabboard.board_task_service.enums.Status;
-//import com.collabboard.board_task_service.enums.Priority;
 import org.example.*;
 import jakarta.persistence.*;
+import org.example.Priority;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
