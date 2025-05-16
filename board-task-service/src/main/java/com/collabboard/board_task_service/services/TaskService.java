@@ -178,4 +178,8 @@ public class TaskService {
         return taskRepository.findByAssigneeIdsContaining(userId);
     }
 
+    public List<Task> getTasksByUserId(Long userId) {
+        return taskRepository.findByAssigneeIdsContaining(userId);
+    }
+
 }

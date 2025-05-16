@@ -1,8 +1,11 @@
 package com.collabboard.user_service.services;
 
+import com.collabboard.user_service.Clients.SearchClient;
 import com.collabboard.user_service.auth.strategy.AuthStrategy;
 import com.collabboard.user_service.models.User;
 import com.collabboard.user_service.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,6 +17,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AuthStrategy authStrategy;
+
+    @Autowired
+    private SearchClient searchClient;
 
     private UserService(UserRepository userRepository, AuthStrategy authStrategy) {
         this.userRepository = userRepository;
@@ -54,5 +60,13 @@ public class UserService {
         }
         return false;
     }
+
+    public Long getUserIdByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(User::getId)
+                .orElse(null);
+    }
+
+
 }
 

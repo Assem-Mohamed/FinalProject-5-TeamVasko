@@ -7,7 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="board-task-service" />
+
+
+        <module name="comment-log-service" />
+        <module name="user-service" />
         <module name="common-dto" />
+        <module name="notification-service" />
+        <module name="search-service" />
+
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -21,6 +28,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="board-task-service" options="-parameters" />
       <module name="comment-log-service" options="-parameters" />
+
       <module name="notification-service" options="-parameters" />
     </option>
   </component>
