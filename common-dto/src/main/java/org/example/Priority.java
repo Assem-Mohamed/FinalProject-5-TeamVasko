@@ -1,8 +1,7 @@
-package com.collabboard.board_task_service.enums;
+package org.example;
 
 public enum Priority {
     LOW,
     MEDIUM,
     HIGH
-
 }
