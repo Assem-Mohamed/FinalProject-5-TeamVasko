@@ -1,22 +1,26 @@
 package com.collabboard.board_task_service.services;
 
+
+import com.collabboard.board_task_service.builders.TaskBuilder;
+import com.collabboard.board_task_service.enums.Priority;
+
 import com.collabboard.board_task_service.enums.Status;
 import com.collabboard.board_task_service.enums.TaskType;
+import com.collabboard.board_task_service.factories.BaseTask;
+import com.collabboard.board_task_service.factories.BugTaskFactory;
+import com.collabboard.board_task_service.factories.ImprovementTaskFactory;
+import com.collabboard.board_task_service.factories.FeatureTaskFactory;
 import com.collabboard.board_task_service.models.Task;
 import com.collabboard.board_task_service.rabbitmq.NotificationMessage;
 import com.collabboard.board_task_service.rabbitmq.RabbitMQProducer;
-import com.collabboard.builder.TaskBuilder;
-import com.collabboard.factory.TaskFactory;
 import com.collabboard.board_task_service.repositories.TaskRepository;
 import org.example.Priority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-
 import java.time.LocalDate;
 import java.util.*;
-
 
 @Service
 public class TaskService {
@@ -89,10 +93,10 @@ public class TaskService {
         task.setDueDate(newDueDate);
         Task saved = taskRepository.save(task);
 
-        notifyAssignees(saved, "Notification: task \"" + saved.getTitle() + "\" due date has been updated to " + newDueDate);
+        notifyAssignees(saved,
+                "Notification: task \"" + saved.getTitle() + "\" due date has been updated to " + newDueDate);
         return saved;
     }
-
 
     // Update priority
     public Task updatePriority(Long taskId, Priority newPriority) {
@@ -102,7 +106,8 @@ public class TaskService {
         task.setPriority(newPriority);
         Task saved = taskRepository.save(task);
 
-        notifyAssignees(saved, "Notification: task \"" + saved.getTitle() + "\" priority has been updated to " + newPriority);
+        notifyAssignees(saved,
+                "Notification: task \"" + saved.getTitle() + "\" priority has been updated to " + newPriority);
         return saved;
     }
 
@@ -114,7 +119,8 @@ public class TaskService {
             task.setDueDate(dueDate);
             Task saved = taskRepository.save(task);
 
-            notifyAssignees(saved, "Notification: task \"" + saved.getTitle() + "\" has been given a new due date: " + dueDate);
+            notifyAssignees(saved,
+                    "Notification: task \"" + saved.getTitle() + "\" has been given a new due date: " + dueDate);
             return saved;
         }
 
@@ -123,11 +129,9 @@ public class TaskService {
 
     // Send notification to assigned users (via external service)
     public void notifyAssignees(Task task, String message) {
-        task.getAssigneeIds().forEach(userId ->
-                rabbitMQProducer.sendNotification(new NotificationMessage(userId, message))
-        );
+        task.getAssigneeIds()
+                .forEach(userId -> rabbitMQProducer.sendNotification(new NotificationMessage(userId, message)));
     }
-
 
     @Scheduled(cron = "0 0 8 * * *") // every day at 8 AM
     public void sendDeadlineReminders() {
@@ -135,8 +139,10 @@ public class TaskService {
         List<Task> tasks = taskRepository.findAll();
 
         for (Task task : tasks) {
-            if (task.getDueDate() == null) continue;
-            if (!EnumSet.of(Status.TODO, Status.IN_PROGRESS, Status.REVIEW).contains(task.getStatus())) continue;
+            if (task.getDueDate() == null)
+                continue;
+            if (!EnumSet.of(Status.TODO, Status.IN_PROGRESS, Status.REVIEW).contains(task.getStatus()))
+                continue;
 
             if (task.getDueDate().equals(today.plusDays(3))) {
                 notifyAssignees(task, "Reminder: task \"" + task.getTitle() + "\" deadline is in less than 3 days");
@@ -144,18 +150,28 @@ public class TaskService {
         }
     }
 
-    // Create task using factory + builder
-    public Task createTaskWithFactoryAndBuilder(TaskType type, String title, String description, Long createdBy) {
-        Task base = TaskFactory.createTask(type);
+    public Task createTaskWithDesignPatterns(TaskType type, String title, String description, Long createdBy) {
+        BaseTask baseTask;
+
+        switch (type) {
+            case BUG -> baseTask = new BugTaskFactory().createTask();
+            case FEATURE -> baseTask = new FeatureTaskFactory().createTask();
+            case IMPROVEMENT -> baseTask = new ImprovementTaskFactory().createTask();
+            default -> throw new IllegalArgumentException("Unknown task type: " + type);
+        }
+        
         Task task = new TaskBuilder()
-                .setTaskType(type)
-                .setTitle(title)
-                .setDescription(description)
-                .setCreatedBy(createdBy)
-                .setPriority(base.getPriority())
-                .setStatus(base.getStatus())
-                .build();
+            .setTitle(title != null ? title : baseTask.getTitle())
+            .setDescription(description != null ? description : baseTask.getDescription())
+            .setPriority(baseTask.getPriority())
+            .setStatus(Status.TODO)
+            .setTaskType(type)
+            .setCreatedBy(createdBy)
+            .setAssigneeIds(new HashSet<>())
+            .build();
+        
         return taskRepository.save(task);
+        
     }
 
     public List<Task> getTasksByUserId(Long userId) {
