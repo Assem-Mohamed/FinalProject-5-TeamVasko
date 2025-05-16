@@ -1,7 +1,9 @@
 package com.collabboard.board_task_service.services;
 
+
 import com.collabboard.board_task_service.builders.TaskBuilder;
 import com.collabboard.board_task_service.enums.Priority;
+
 import com.collabboard.board_task_service.enums.Status;
 import com.collabboard.board_task_service.enums.TaskType;
 import com.collabboard.board_task_service.factories.BaseTask;
@@ -12,6 +14,7 @@ import com.collabboard.board_task_service.models.Task;
 import com.collabboard.board_task_service.rabbitmq.NotificationMessage;
 import com.collabboard.board_task_service.rabbitmq.RabbitMQProducer;
 import com.collabboard.board_task_service.repositories.TaskRepository;
+import org.example.Priority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -169,6 +172,10 @@ public class TaskService {
         
         return taskRepository.save(task);
         
+    }
+
+    public List<Task> getTasksByUserId(Long userId) {
+        return taskRepository.findByAssigneeIdsContaining(userId);
     }
 
 }
