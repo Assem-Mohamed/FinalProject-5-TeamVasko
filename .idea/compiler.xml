@@ -8,7 +8,10 @@
         <outputRelativeToContentRoot value="true" />
         <module name="board-task-service" />
         <module name="comment-log-service" />
+        <module name="user-service" />
+        <module name="common-dto" />
         <module name="notification-service" />
+        <module name="search-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -18,6 +21,8 @@
       <module name="comment-log-service" options="-parameters" />
 
       <module name="notification-service" options="-parameters" />
+      <module name="search-service" options="-parameters" />
+      <module name="user-service" options="-parameters" />
     </option>
   </component>
 </project>

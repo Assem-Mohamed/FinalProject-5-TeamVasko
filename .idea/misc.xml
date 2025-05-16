@@ -18,6 +18,9 @@
         <option value="$PROJECT_DIR$/board-task-service/pom.xml" />
         <option value="$PROJECT_DIR$/comment-log-service/pom.xml" />
         <option value="$PROJECT_DIR$/notification-service/pom.xml" />
+        <option value="$PROJECT_DIR$/search-service/pom.xml" />
+        <option value="$PROJECT_DIR$/user-service/pom.xml" />
+        <option value="$PROJECT_DIR$/common-dto/pom.xml" />
       </list>
     </option>
   </component>
