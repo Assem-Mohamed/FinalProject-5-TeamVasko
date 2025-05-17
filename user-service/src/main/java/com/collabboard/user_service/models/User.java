@@ -1,6 +1,5 @@
 package com.collabboard.user_service.models;
 
-import org.springframework.data.annotation.Id;
 import jakarta.persistence.*;
 
 @Entity

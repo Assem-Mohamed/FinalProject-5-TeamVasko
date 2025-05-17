@@ -1,7 +1,7 @@
-package com.collabboard.search_reminder_service.models;
+package com.collabboard.search_service.models;
 
 import org.example.TaskDTO;
-import com.collabboard.search_reminder_service.search.strategy.SearchStrategy;
+import com.collabboard.search_service.search.strategy.SearchStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
-package com.collabboard.search_reminder_service.models;
+package com.collabboard.search_service.models;
 
-import com.collabboard.search_reminder_service.Clients.TaskDTO;
+import org.example.TaskDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

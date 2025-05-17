@@ -1,4 +1,4 @@
-package com.collabboard.user_service.rabbitmq;
+package Scalable.rabbitmq;
 
 import java.time.Instant;
 import java.util.List;

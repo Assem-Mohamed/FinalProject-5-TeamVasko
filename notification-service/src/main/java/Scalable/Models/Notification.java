@@ -10,19 +10,19 @@ public class Notification {
     @Id
     private String id;
 
-    private String userId;
+    private Long userId;
     private String message;
     private boolean read;
     private Date timestamp;
 
-    public Notification(String userId, String message, boolean read, Date timestamp) {
+    public Notification(Long userId, String message, boolean read, Date timestamp) {
         this.userId = userId;
         this.message = message;
         this.read = read;
         this.timestamp = timestamp;
     }
 
-    public Notification(String userId, String message) {
+    public Notification(Long userId, String message) {
         this.userId = userId;
         this.message = message;
         this.read = false;
@@ -37,11 +37,11 @@ public class Notification {
         this.id = id;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

@@ -1,4 +1,4 @@
-package com.collabboard.search_reminder_service;
+package com.collabboard.search_service;
 
 
 import org.springframework.boot.test.context.SpringBootTest;

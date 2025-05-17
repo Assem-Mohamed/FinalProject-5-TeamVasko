@@ -1,4 +1,4 @@
-package com.collabboard.user_service.rabbitmq;
+package Scalable.rabbitmq;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -10,13 +10,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    public static final String COMMENT_QUEUE = "user_comment";
+    public static final String NOTIFICATION_QUEUE = "task_notification";
     public static final String EXCHANGE = "shared_exchange";
-    public static final String COMMENT_ROUTING_KEY = "comment_routing_key";
+    public static final String NOTIFICATION_ROUTING_KEY = "notification_routing_key";
 
     @Bean
     public Queue queue() {
-        return new Queue(COMMENT_QUEUE);
+        return new Queue(NOTIFICATION_QUEUE);
     }
 
     @Bean
@@ -29,6 +29,6 @@ public class RabbitMQConfig {
         return BindingBuilder
                 .bind(queue)
                 .to(exchange)
-                .with(COMMENT_ROUTING_KEY);
+                .with(NOTIFICATION_ROUTING_KEY);
     }
 }
