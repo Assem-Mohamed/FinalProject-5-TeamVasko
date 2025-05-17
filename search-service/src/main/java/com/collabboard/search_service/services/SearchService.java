@@ -1,8 +1,8 @@
-package com.collabboard.search_reminder_service.services;
+package com.collabboard.search_service.services;
 
 import org.example.TaskDTO;
-import com.collabboard.search_reminder_service.models.SearchContext;
-import com.collabboard.search_reminder_service.models.SearchRequest;
+import com.collabboard.search_service.models.SearchContext;
+import com.collabboard.search_service.models.SearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
-package com.collabboard.search_reminder_service.controllers;
+package com.collabboard.search_service.controllers;
 
-import com.collabboard.search_reminder_service.models.SearchRequest;
-import com.collabboard.search_reminder_service.services.SearchService;
+import com.collabboard.search_service.models.SearchRequest;
+import com.collabboard.search_service.services.SearchService;
 import org.example.TaskDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

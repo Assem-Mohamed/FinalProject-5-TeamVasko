@@ -104,4 +104,12 @@ public class Comment {
         public String getParentCommentId() {
                 return parentCommentId;
         }
+
+        public List<Long> getTaggedUserIds() {
+                return taggedUserIds;
+        }
+
+        public void setTaggedUserIds(List<Long> taggedUserIds) {
+                this.taggedUserIds = taggedUserIds;
+        }
 }

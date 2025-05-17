@@ -13,13 +13,13 @@ public class RabbitMQProducer {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendComment(CommentMessage message) {
+    public void sendComment(CommentMessage commentMessage) {
         rabbitTemplate.convertAndSend(
                 RabbitMQConfig.EXCHANGE,
                 RabbitMQConfig.COMMENT_ROUTING_KEY,
-                message
+                commentMessage
         );
 
-        System.out.println("📬 Sent Notification via RabbitMQ to user " + message.getRecipientId() + ": " + message.getMessage());
+        System.out.println("📤 Sent comment to queue for taskId: " + commentMessage.getTaskId());
     }
 }

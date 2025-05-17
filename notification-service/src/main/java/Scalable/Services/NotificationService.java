@@ -25,7 +25,7 @@ public class NotificationService {
 
 
 
-    public Notification sendNotification(String userId, String message) {
+    public Notification sendNotification(Long userId, String message) {
         Notification notification = new Notification(userId, message, false, new Date());
         return notificationRepository.save(notification);
     }

@@ -1,6 +1,6 @@
 package com.collabboard.user_service.Clients;
 
-import com.collabboard.search_reminder_service.models.SearchRequest;
+import com.collabboard.search_service.models.SearchRequest;
 import org.example.TaskDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

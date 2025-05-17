@@ -1,4 +1,4 @@
-package com.collabboard.search_reminder_service;
+package com.collabboard.search_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 //import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableCaching
-@EnableFeignClients(basePackages = "com.collabboard.searchreminderservice.client")
+@EnableFeignClients(basePackages = "com.collabboard.search_service.client")
 @SpringBootApplication
 
 public class SearchServiceApplication {

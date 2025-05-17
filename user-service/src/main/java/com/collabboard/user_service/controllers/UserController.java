@@ -1,6 +1,6 @@
 package com.collabboard.user_service.controllers;
 
-import com.collabboard.search_reminder_service.models.SearchRequest;
+import com.collabboard.search_service.models.SearchRequest;
 import com.collabboard.user_service.Clients.SearchClient;
 import com.collabboard.user_service.Clients.TaskClient;
 import com.collabboard.user_service.auth.strategy.AuthStrategy;

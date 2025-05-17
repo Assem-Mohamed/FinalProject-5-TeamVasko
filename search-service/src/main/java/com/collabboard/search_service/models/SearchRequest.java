@@ -1,4 +1,4 @@
-package com.collabboard.search_reminder_service.models;
+package com.collabboard.search_service.models;
 
 
 import org.example.TaskDTO;
