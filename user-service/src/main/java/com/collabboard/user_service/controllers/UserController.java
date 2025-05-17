@@ -77,4 +77,17 @@ public class UserController {
         return searchClient.searchUserTasks(request);
     }
 
+    @PostMapping("/comments")
+    public ResponseEntity<String> submitComment(@RequestBody Map<String, Object> requestBody) {
+        Long taskId = ((Number) requestBody.get("taskId")).longValue();
+        Long authorId = ((Number) requestBody.get("authorId")).longValue();
+        String content = (String) requestBody.get("content");
+        String parentCommentId = (String) requestBody.get("parentCommentId");
+        List<Integer> taggedIdsRaw = (List<Integer>) requestBody.getOrDefault("taggedUserIds", List.of());
+        List<Long> taggedUserIds = taggedIdsRaw.stream().map(Long::valueOf).toList();
+
+        userService.addComment(taskId, authorId, content, parentCommentId, taggedUserIds);
+        return ResponseEntity.ok("Comment sent to comment-service");
+    }
+
 }

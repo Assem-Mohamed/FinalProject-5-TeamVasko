@@ -3,11 +3,15 @@ package com.collabboard.user_service.services;
 import com.collabboard.user_service.Clients.SearchClient;
 import com.collabboard.user_service.auth.strategy.AuthStrategy;
 import com.collabboard.user_service.models.User;
+import com.collabboard.user_service.rabbitmq.CommentMessage;
+import com.collabboard.user_service.rabbitmq.RabbitMQProducer;
 import com.collabboard.user_service.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +24,10 @@ public class UserService {
 
     @Autowired
     private SearchClient searchClient;
+
+    @Autowired
+    private RabbitMQProducer rabbitMQProducer;
+
 
     private UserService(UserRepository userRepository, AuthStrategy authStrategy) {
         this.userRepository = userRepository;
@@ -66,6 +74,23 @@ public class UserService {
                 .map(User::getId)
                 .orElse(null);
     }
+
+
+
+    public void addComment(Long taskId, Long authorId, String content, String parentCommentId, List<Long> taggedUserIds) {
+        CommentMessage message = new CommentMessage(
+                taskId,
+                authorId,
+                content,
+                Instant.now(),
+                parentCommentId,
+                taggedUserIds
+        );
+        rabbitMQProducer.sendComment(message);
+    }
+
+
+
 
 
 }

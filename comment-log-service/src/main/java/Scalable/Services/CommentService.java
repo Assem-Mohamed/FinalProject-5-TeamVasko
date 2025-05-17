@@ -32,7 +32,7 @@ public class CommentService {
     }
 
     public Comment save(Comment comment) {
-        return CommentRepository.save(comment);
+        return commentRepository.save(comment);
     }
 
     public Comment createComment(Comment comment) {
@@ -92,9 +92,9 @@ public class CommentService {
 
         while (matcher.find()) {
             String username = matcher.group(1);
-            User user = userRepository.findByUsername(username);
-            if (user != null) {
-                userIds.add(user.getId());
+            Optional<User> user = userRepository.findByUsername(username);
+            if (user.isPresent()) {
+                userIds.add(user.get().getId());
             }
         }
         return userIds;

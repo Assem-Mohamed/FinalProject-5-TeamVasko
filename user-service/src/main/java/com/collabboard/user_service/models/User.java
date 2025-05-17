@@ -17,12 +17,22 @@ public class User {
 
     private boolean isLoggedIn;
 
+    private String username;
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String usersame) {
+        this.username = username;
     }
 
     public String getEmail() {

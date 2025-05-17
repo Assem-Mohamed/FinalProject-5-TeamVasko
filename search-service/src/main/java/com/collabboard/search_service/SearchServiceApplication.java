@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 //import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableCaching
-@EnableFeignClients(basePackages = "com.collabboard.search_service.client")
+
 @SpringBootApplication
 
 public class SearchServiceApplication {
