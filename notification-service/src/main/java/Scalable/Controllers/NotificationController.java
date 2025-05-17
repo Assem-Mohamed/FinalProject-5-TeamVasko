@@ -27,19 +27,19 @@ public class NotificationController {
     }
 
     @PostMapping("/send")
-    public ResponseEntity<Void> sendNotification(@RequestParam String userId, @RequestParam String message) {
+    public ResponseEntity<Void> sendNotification(@RequestParam Long userId, @RequestParam String message) {
         NotificationCommand command = new SendNotificationCommand(userId, message);
         commandDispatcher.dispatch("notification.exchange", "notification.routingKey", command);
         return ResponseEntity.accepted().build();
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Notification>> getAll(@PathVariable String userId) {
+    public ResponseEntity<List<Notification>> getAll(@PathVariable Long userId) {
         return ResponseEntity.ok(notificationService.getNotificationsForUser(userId));
     }
 
     @GetMapping("/{userId}/unread")
-    public ResponseEntity<List<Notification>> getUnread(@PathVariable String userId) {
+    public ResponseEntity<List<Notification>> getUnread(@PathVariable Long userId) {
         return ResponseEntity.ok(notificationService.getUnreadNotifications(userId));
     }
 
