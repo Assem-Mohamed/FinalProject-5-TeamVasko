@@ -1,10 +1,18 @@
 package com.collabboard.user_service.services;
 
+import com.collabboard.user_service.Clients.SearchClient;
 import com.collabboard.user_service.auth.strategy.AuthStrategy;
 import com.collabboard.user_service.models.User;
+import com.collabboard.user_service.rabbitmq.CommentMessage;
+import com.collabboard.user_service.rabbitmq.RabbitMQProducer;
 import com.collabboard.user_service.repositories.UserRepository;
+import org.example.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,6 +22,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AuthStrategy authStrategy;
+
+    @Autowired
+    private SearchClient searchClient;
+
+    @Autowired
+    private RabbitMQProducer rabbitMQProducer;
+
 
     private UserService(UserRepository userRepository, AuthStrategy authStrategy) {
         this.userRepository = userRepository;
@@ -54,5 +69,78 @@ public class UserService {
         }
         return false;
     }
+
+    public Long getUserIdByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(User::getId)
+                .orElse(null);
+    }
+
+
+    public void addComment(Long taskId, Long authorId, String content, String parentCommentId, List<Long> taggedUserIds) {
+        CommentMessage message = new CommentMessage(
+                taskId,
+                authorId,
+                content,
+                Instant.now(),
+                parentCommentId,
+                taggedUserIds
+        );
+        rabbitMQProducer.sendComment(message);
+    }
+
+    public Optional<UserDTO> getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(user -> new UserDTO(user.getId(), user.getUsername(), user.getEmail(), user.getPassword()));
+    }
+
+
+
+    public UserDTO createUser(UserDTO userDTO) {
+        User user = new User();
+        user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword()); // ideally hashed
+        userRepository.save(user);
+        return new UserDTO(user.getId(), user.getUsername(), user.getEmail(), user.getPassword());
+    }
+
+
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(user -> new UserDTO(user.getId(), user.getUsername(), user.getEmail(), user.getPassword()))
+                .toList();
+    }
+
+
+    public Optional<UserDTO> getUserById(Long id) {
+        return userRepository.findById(id)
+                .map(user -> new UserDTO(user.getId(), user.getUsername(), user.getEmail(), user.getPassword()));
+    }
+
+
+    public Optional<UserDTO> updateUser(Long id, UserDTO userDTO) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setUsername(userDTO.getUsername());
+            user.setEmail(userDTO.getEmail());
+            // Update password if needed
+            userRepository.save(user);
+            return Optional.of(new UserDTO(user.getId(), user.getUsername(), user.getEmail(), user.getPassword()));
+        }
+        return Optional.empty();
+    }
+
+    public boolean deleteUser(Long id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+
 }
 
