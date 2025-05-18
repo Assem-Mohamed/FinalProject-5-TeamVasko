@@ -1,6 +1,5 @@
 package com.collabboard.user_service.controllers;
 
-import com.collabboard.search_service.models.SearchRequest;
 import com.collabboard.user_service.Clients.SearchClient;
 import com.collabboard.user_service.Clients.TaskClient;
 import com.collabboard.user_service.auth.strategy.AuthStrategy;
@@ -8,6 +7,8 @@ import com.collabboard.user_service.repositories.UserRepository;
 import com.collabboard.user_service.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.example.TaskDTO;
+import org.example.SearchDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,20 +63,34 @@ public class UserController {
     }
 
 
+//    @PostMapping("/search")
+//    public List<TaskDTO> searchTasks(@RequestBody String keyword, HttpSession session) {
+//        Long userId = (Long) session.getAttribute("userId");
+//
+//        List<TaskDTO> tasks = taskClient.getTasksByUserId(userId);
+//
+//        SearchRequest request = new SearchRequest();
+//        request.setFullText(keyword);
+//        request.setUserId(userId);
+//        request.setTasks(tasks);
+//
+//        return searchClient.searchUserTasks(request);
+//    }
     @PostMapping("/search")
     public List<TaskDTO> searchTasks(@RequestBody String keyword, HttpSession session) {
         Long userId = (Long) session.getAttribute("userId");
-        //if (userId == null) throw new UnauthorizedException();
 
         List<TaskDTO> tasks = taskClient.getTasksByUserId(userId);
 
-        SearchRequest request = new SearchRequest();
-        request.setFullText(keyword);
-        request.setUserId(userId);
-        request.setTasks(tasks);
+        // Use the new SearchDTO
+        SearchDTO searchDTO = new SearchDTO();
+        searchDTO.setFullText(keyword);
+        searchDTO.setUserId(userId);
+        searchDTO.setTasks(tasks);
 
-        return searchClient.searchUserTasks(request);
+        return searchClient.searchUserTasks(searchDTO);
     }
+
 
     @PostMapping("/comments")
     public ResponseEntity<String> submitComment(@RequestBody Map<String, Object> requestBody) {
