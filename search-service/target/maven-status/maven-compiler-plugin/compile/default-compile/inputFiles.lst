@@ -1,0 +1,12 @@
+C:\Users\menna\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\config\RedisCacheConfig.java
+C:\Users\menna\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\controllers\SearchController.java
+C:\Users\menna\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\models\SearchContext.java
+C:\Users\menna\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\models\SearchRequest.java
+C:\Users\menna\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\FilterByAssigneeStrategy.java
+C:\Users\menna\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\FilterByDueDateStrategy.java
+C:\Users\menna\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\FilterByPriorityStrategy.java
+C:\Users\menna\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\FullTextSearchStrategy.java
+C:\Users\menna\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\SearchStrategy.java
+C:\Users\menna\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\SortByFieldStrategy.java
+C:\Users\menna\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\SearchServiceApplication.java
+C:\Users\menna\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\services\SearchService.java

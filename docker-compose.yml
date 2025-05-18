@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   postgres:
@@ -10,11 +10,17 @@ services:
       POSTGRES_DB: collabboard
     ports:
       - "5432:5432"
+    networks:
+      - collabboard-network
+
   redis:
     image: redis:latest
     container_name: redis
     ports:
       - "6379:6379"
+    networks:
+      - collabboard-network
+
   rabbitmq:
     image: rabbitmq:4.0-management
     container_name: rabbitmq
@@ -24,16 +30,23 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - collabboard-network
+
   mongo:
     image: mongo
+    container_name: mongo
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
     ports:
       - "27017:27017"
+    networks:
+      - collabboard-network
   nginx:
     image: nginx:latest
+    container_name: nginx
     ports:
       - "80:80"
     volumes:
@@ -49,62 +62,108 @@ services:
       - notification-service2
       - search-service1
       - search-service2
+    networks:
+      - collabboard-network
 
   # Board & Task Service Instances
   board-task-service1:
-    build: ./board-task-service
+    build:
+      context: ./board-task-service
+      dockerfile: Dockerfile
     environment:
       - SERVER_PORT=8080
     ports:
       - "8081:8080"
+    networks:
+      - collabboard-network
 
   board-task-service2:
-    build: ./board-task-service
+    build:
+      context: ./board-task-service
+      dockerfile: Dockerfile
     environment:
       - SERVER_PORT=8080
     ports:
       - "8082:8080"
+    networks:
+      - collabboard-network
 
   # User Service Instances
   user-service1:
-    build: ./user-service
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
     ports:
       - "8083:8080"
+    networks:
+      - collabboard-network
 
   user-service2:
-    build: ./user-service
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
     ports:
       - "8084:8080"
+    networks:
+      - collabboard-network
 
   # Comment & Log Service Instances
   comment-log-service1:
-    build: ./comment-log-service
+    build:
+      context: ./comment-log-service
+      dockerfile: Dockerfile
     ports:
       - "8085:8080"
+    networks:
+      - collabboard-network
 
   comment-log-service2:
-    build: ./comment-log-service
+    build:
+      context: ./comment-log-service
+      dockerfile: Dockerfile
     ports:
       - "8086:8080"
+    networks:
+      - collabboard-network
 
   # Notification Service Instances
   notification-service1:
-    build: ./notification-service
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
     ports:
       - "8087:8080"
+    networks:
+      - collabboard-network
 
   notification-service2:
-    build: ./notification-service
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
     ports:
       - "8088:8080"
+    networks:
+      - collabboard-network
 
   # Search Service Instances
   search-service1:
-    build: ./search-service
+    build:
+      context: ./search-service
+      dockerfile: Dockerfile
     ports:
       - "8089:8080"
+    networks:
+      - collabboard-network
 
   search-service2:
-    build: ./search-service
+    build:
+      context: ./search-service
+      dockerfile: Dockerfile
     ports:
       - "8090:8080"
+    networks:
+      - collabboard-network
+
+networks:
+  collabboard-network:
+    driver: bridge

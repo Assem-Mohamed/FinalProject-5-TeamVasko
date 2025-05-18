@@ -15,7 +15,7 @@ public class SearchService {
 
     @Autowired private SearchContext searchContext;
 
-    @Cacheable(value = "Tasks_SearchResult_Cache" , key = "#userId + ':' + #request.fullText", condition = "#request.fullText != null")
+    @Cacheable(value = "Search Results" , key = "#userId + ':' + #request.fullText", condition = "#request.fullText != null")
     public List<TaskDTO> searchTasks(SearchRequest request, Long userId){
         return searchContext.executeStrategies(request.getTasks(), request);   // Perform DB or API search
     }
