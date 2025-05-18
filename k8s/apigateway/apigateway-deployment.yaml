@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apigateway-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: apigateway-service
+  template:
+    metadata:
+      labels:
+        app: apigateway-service
+    spec:
+      containers:
+        - name: apigateway-service
+          image: ziadhegazy99/apigateway
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: k8s
+            - name: SPRING_MAIN_WEB_APPLICATION_TYPE
+              value: reactive
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_0_ID
+              value: customer-service
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_0_URI
+              value: http://customer-service:8080
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0
+              value: Path=/customers/**
+
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_1_ID
+              value: fraud-service
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_1_URI
+              value: http://fraud-service:8080
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0
+              value: Path=/frauds/**
+
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_2_ID
+              value: notification-service
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_2_URI
+              value: http://notification-service:8080
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_2_PREDICATES_0
+              value: Path=/notifications/**

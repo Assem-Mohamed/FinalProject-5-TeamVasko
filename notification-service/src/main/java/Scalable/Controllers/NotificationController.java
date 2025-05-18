@@ -34,12 +34,12 @@ public class NotificationController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Notification>> getAll(@PathVariable String userId) {
+    public ResponseEntity<List<Notification>> getAll(@PathVariable Long userId) {
         return ResponseEntity.ok(notificationService.getNotificationsForUser(userId));
     }
 
     @GetMapping("/{userId}/unread")
-    public ResponseEntity<List<Notification>> getUnread(@PathVariable String userId) {
+    public ResponseEntity<List<Notification>> getUnread(@PathVariable Long userId) {
         return ResponseEntity.ok(notificationService.getUnreadNotifications(userId));
     }
 
