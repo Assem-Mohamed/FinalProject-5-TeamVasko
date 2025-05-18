@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mongo
+  name: mongo-comment
 spec:
-  serviceName: "mongo"  # Must match headless service
+  serviceName: "mongo-comment"  # Must match headless service
   replicas: 1  # Can scale to more for replica set
   selector:
     matchLabels:
-      app: mongo
+      app: mongo-comment
   template:
     metadata:
       labels:
-        app: mongo
+        app: mongo-comment
     spec:
       containers:
         - name: mongo
@@ -22,19 +22,19 @@ spec:
             - name: MONGO_INITDB_ROOT_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: mongo-secret
+                  name: mongo-comment-secret
                   key: MONGO_INITDB_ROOT_USERNAME
             - name: MONGO_INITDB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mongo-secret
+                  name: mongo-comment-secret
                   key: MONGO_INITDB_ROOT_PASSWORD
           volumeMounts:
-            - name: mongo-persistent-volume
+            - name: mongo-comment-volume
               mountPath: /data/db
   volumeClaimTemplates:
     - metadata:
-        name: mongo-persistent-volume
+        name: mongo-comment-volume
       spec:
         accessModes: ["ReadWriteOnce"]
         resources:

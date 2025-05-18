@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: notification-service
+  name: comment-log-service
 spec:
   replicas: 2
   selector:
@@ -23,10 +23,10 @@ spec:
             - name: SPRING_DATA_MONGODB_URI
               valueFrom:
                 secretKeyRef:
-                  name: mongo-secret
+                  name: mongo-comment-secret
                   key: URI
             - name: SPRING_DATA_MONGODB_DATABASE
-              value: notification_db
+              value: comment_db
             - name: SPRING_RABBITMQ_HOST
               value: rabbitmq
             - name: SPRING_RABBITMQ_PORT

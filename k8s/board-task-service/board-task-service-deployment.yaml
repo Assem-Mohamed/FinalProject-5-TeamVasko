@@ -21,16 +21,16 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: k8s
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://postgres-0.postgres:5432/collabboard
+              value: jdbc:postgresql://postgres-0.postgres:5432/task_db
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: postgres-task-secret
                   key: POSTGRES_USER
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: postgres-task-secret
                   key: POSTGRES_PASSWORD
             - name: SPRING_RABBITMQ_HOST
               value: rabbitmq
