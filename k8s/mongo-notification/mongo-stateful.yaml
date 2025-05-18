@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo-notification
+spec:
+  serviceName: "mongo"  # Must match headless service
+  replicas: 1  # Can scale to more for replica set
+  selector:
+    matchLabels:
+      app: mongo-notification
+  template:
+    metadata:
+      labels:
+        app: mongo-notification
+    spec:
+      containers:
+        - name: mongo
+          image: mongo
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-notification-secret
+                  key: MONGO_INITDB_ROOT_USERNAME
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-notification-secret
+                  key: MONGO_INITDB_ROOT_PASSWORD
+          volumeMounts:
+            - name: mongo-notification-volume
+              mountPath: /data/db
+  volumeClaimTemplates:
+    - metadata:
+        name: mongo-notification-volume
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi

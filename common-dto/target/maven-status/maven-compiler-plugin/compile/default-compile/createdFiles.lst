@@ -1,3 +1,4 @@
 org\example\Priority.class
 org\example\SearchDTO.class
+org\example\UserDTO.class
 org\example\TaskDTO.class

@@ -3,21 +3,21 @@ package com.collabboard.user_service.controllers;
 import com.collabboard.user_service.Clients.SearchClient;
 import com.collabboard.user_service.Clients.TaskClient;
 import com.collabboard.user_service.auth.strategy.AuthStrategy;
+import com.collabboard.user_service.models.User;
 import com.collabboard.user_service.repositories.UserRepository;
 import com.collabboard.user_service.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.example.TaskDTO;
 import org.example.SearchDTO;
 
+import org.example.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -104,5 +104,53 @@ public class UserController {
         userService.addComment(taskId, authorId, content, parentCommentId, taggedUserIds);
         return ResponseEntity.ok("Comment sent to comment-service");
     }
+
+    @GetMapping("/by-username/{username}")
+    public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username) {
+        Optional<UserDTO> user = userService.getUserByUsername(username);
+        return user.map(u -> ResponseEntity.ok(new UserDTO(u.getId(), u.getUsername(), u.getEmail(), u.getPassword())))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
+    /// CRUDS
+    // CREATE a new user
+    @PostMapping("/")
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+        UserDTO createdUser = userService.createUser(userDTO);
+        return ResponseEntity.ok(createdUser);
+    }
+
+    // READ all users
+    @GetMapping("/")
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+    // READ user by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        Optional<UserDTO> user = userService.getUserById(id);
+        return user.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // UPDATE user by ID
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO updatedUserDTO) {
+        Optional<UserDTO> updatedUser = userService.updateUser(id, updatedUserDTO);
+        return updatedUser.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // DELETE user by ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        boolean deleted = userService.deleteUser(id);
+        return deleted ? ResponseEntity.ok("User deleted successfully")
+                : ResponseEntity.status(404).body("User not found");
+    }
+
 
 }
