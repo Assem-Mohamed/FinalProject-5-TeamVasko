@@ -70,12 +70,23 @@ services:
     build:
       context: ./board-task-service
       dockerfile: Dockerfile
-    environment:
-      - SERVER_PORT=8080
     ports:
       - "8081:8080"
     networks:
       - collabboard-network
+    environment:
+      - SPRING_APPLICATION_NAME=UserServiceApplication
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/userdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
+      - SPRING_JPA_DATABASE-PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_HIBERNATE_DDL-AUTO=create-drop
+      - SPRING_JPA_GENERATE-DDL=true
+      - SPRING_JPA_SHOW-SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_USE_SQL_COMMENTS=true
+      - SERVER_PORT=8080
 
   board-task-service2:
     build:
@@ -83,6 +94,17 @@ services:
       dockerfile: Dockerfile
     environment:
       - SERVER_PORT=8080
+      - SPRING_APPLICATION_NAME=BoardAndTaskServiceApplication
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/taskdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
+      - SPRING_JPA_DATABASE-PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_HIBERNATE_DDL-AUTO=create-drop
+      - SPRING_JPA_GENERATE-DDL=true
+      - SPRING_JPA_SHOW-SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_USE_SQL_COMMENTS=true
     ports:
       - "8082:8080"
     networks:
@@ -110,7 +132,10 @@ services:
       - "8084:8080"
     networks:
       - collabboard-network
-
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/userdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1234
   # Comment & Log Service Instances
   comment-log-service1:
     build:
@@ -120,6 +145,10 @@ services:
       - "8085:8080"
     networks:
       - collabboard-network
+    environment:
+      - SPRING_APPLICATION_NAME=CommentLogService
+      - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/commentdb?authSource=admin
+      - SPRING_DATA_MONGODB_DATABASE=commentdb
 
   comment-log-service2:
     build:
@@ -129,7 +158,10 @@ services:
       - "8086:8080"
     networks:
       - collabboard-network
-
+    environment:
+      - SPRING_APPLICATION_NAME=CommentLogService
+      - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/commentdb?authSource=admin
+      - SPRING_DATA_MONGODB_DATABASE=commentdb
   # Notification Service Instances
   notification-service1:
     build:
@@ -140,13 +172,13 @@ services:
     networks:
       - collabboard-network
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/collabboard
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=1234
-      - SPRING_RABBITMQ_HOST=rabbitmq
-      - SPRING_RABBITMQ_PORT=5672
-      - SPRING_RABBITMQ_USERNAME=guest
-      - SPRING_RABBITMQ_PASSWORD=guest
+    - SPRING_APPLICATION_NAME=NotificationService
+    - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/notificationdb?authSource=admin
+    - SPRING_DATA_MONGODB_DATABASE=notificationdb
+    - SPRING_RABBITMQ_HOST=rabbitmq
+    - SPRING_RABBITMQ_PORT=5672
+    - SPRING_RABBITMQ_USERNAME=guest
+    - SPRING_RABBITMQ_PASSWORD=guest
 
   notification-service2:
     build:
@@ -156,7 +188,14 @@ services:
       - "8088:8080"
     networks:
       - collabboard-network
-
+    environment:
+      - SPRING_APPLICATION_NAME=NotificationService
+      - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/notificationdb?authSource=admin
+      - SPRING_DATA_MONGODB_DATABASE=notificationdb
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
   # Search Service Instances
   search-service1:
     build:
@@ -166,6 +205,10 @@ services:
       - "8089:8080"
     networks:
       - collabboard-network
+    environment:
+      - SPRING_APPLICATION_NAME=SearchService
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
 
   search-service2:
     build:
@@ -175,7 +218,10 @@ services:
       - "8090:8080"
     networks:
       - collabboard-network
-
+    environment:
+      - SPRING_APPLICATION_NAME=SearchService
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
 networks:
   collabboard-network:
     driver: bridge

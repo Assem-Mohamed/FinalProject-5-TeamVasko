@@ -4,9 +4,9 @@ import Scalable.NotificationCommand;
 import Scalable.Services.NotificationService;
 
 public class DeleteNotificationsCommand implements NotificationCommand {
-    private final String userId;
+    private final Long userId;
 
-    public DeleteNotificationsCommand(String userId) {
+    public DeleteNotificationsCommand(Long userId) {
         this.userId = userId;
     }
 
