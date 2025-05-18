@@ -3,21 +3,21 @@ package com.collabboard.user_service.controllers;
 import com.collabboard.user_service.Clients.SearchClient;
 import com.collabboard.user_service.Clients.TaskClient;
 import com.collabboard.user_service.auth.strategy.AuthStrategy;
+import com.collabboard.user_service.models.User;
 import com.collabboard.user_service.repositories.UserRepository;
 import com.collabboard.user_service.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.example.TaskDTO;
 import org.example.SearchDTO;
 
+import org.example.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -103,6 +103,13 @@ public class UserController {
 
         userService.addComment(taskId, authorId, content, parentCommentId, taggedUserIds);
         return ResponseEntity.ok("Comment sent to comment-service");
+    }
+
+    @GetMapping("/by-username/{username}")
+    public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username) {
+        Optional<UserDTO> user = userService.getUserByUsername(username);
+        return user.map(u -> ResponseEntity.ok(new UserDTO(u.getId(), u.getUsername(), u.getEmail())))
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }

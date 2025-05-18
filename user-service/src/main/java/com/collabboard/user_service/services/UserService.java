@@ -6,6 +6,7 @@ import com.collabboard.user_service.models.User;
 import com.collabboard.user_service.rabbitmq.CommentMessage;
 import com.collabboard.user_service.rabbitmq.RabbitMQProducer;
 import com.collabboard.user_service.repositories.UserRepository;
+import org.example.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
@@ -76,7 +77,6 @@ public class UserService {
     }
 
 
-
     public void addComment(Long taskId, Long authorId, String content, String parentCommentId, List<Long> taggedUserIds) {
         CommentMessage message = new CommentMessage(
                 taskId,
@@ -89,6 +89,10 @@ public class UserService {
         rabbitMQProducer.sendComment(message);
     }
 
+    public Optional<UserDTO> getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(user -> new UserDTO(user.getId(), user.getUsername(), user.getEmail()));
+    }
 
 
 
