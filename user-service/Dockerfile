@@ -1,6 +1,5 @@
 # Use a stable JDK image
-FROM openjdk:17-jdk-alpine
-
+FROM openjdk:25-ea-4-jdk-oraclelinux9
 # Set the working directory
 WORKDIR /app
 

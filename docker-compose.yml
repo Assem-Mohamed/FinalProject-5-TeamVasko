@@ -98,6 +98,10 @@ services:
       - "8083:8080"
     networks:
       - collabboard-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/userdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1234
 
   user-service2:
     build:
@@ -136,6 +140,14 @@ services:
       - "8087:8080"
     networks:
       - collabboard-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/collabboard
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
 
   notification-service2:
     build:

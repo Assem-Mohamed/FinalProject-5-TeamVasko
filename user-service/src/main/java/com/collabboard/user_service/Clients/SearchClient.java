@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "search-service", url = "http://localhost:8080") // or service discovery name
+@FeignClient(name = "search-service") // or service discovery name
 public interface SearchClient {
     @PostMapping("/api/search")
     List<TaskDTO> searchUserTasks(@RequestBody SearchDTO searchDTO);

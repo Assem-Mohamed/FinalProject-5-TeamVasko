@@ -3,8 +3,8 @@ package Scalable.Services;
 import Scalable.Clients.UserClient;
 import Scalable.Models.Comment;
 import Scalable.Repositories.CommentRepository;
-import com.collabboard.user_service.models.User;
-import com.collabboard.user_service.repositories.UserRepository;
+//import com.collabboard.user_service.models.User;
+//import com.collabboard.user_service.repositories.UserRepository;
 import com.mongodb.client.MongoClient;
 import org.example.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,17 +23,17 @@ import java.util.regex.Pattern;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
+    //private final UserRepository userRepository;
 
     @Autowired
     private UserClient userClient;
 
     MongoClient mongoClient;
     @Autowired
-    public CommentService(CommentRepository commentRepository, MongoClient mongoClient, UserRepository userRepository) {
+    public CommentService(CommentRepository commentRepository, MongoClient mongoClient) {
         this.commentRepository = commentRepository;
         this.mongoClient = mongoClient;
-        this.userRepository  = userRepository;
+        //this.userRepository  = userRepository;
     }
 
     public Comment save(Comment comment) {

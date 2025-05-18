@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "task-service", url = "http://localhost:8080") // Adjust URL as needed
+@FeignClient(name = "task-service") // Adjust URL as needed
 public interface TaskClient {
 
     @GetMapping("/user/{userId}")
