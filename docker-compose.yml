@@ -44,7 +44,6 @@ services:
       - "27017:27017"
     networks:
       - collabboard-network
-
   nginx:
     image: nginx:latest
     container_name: nginx

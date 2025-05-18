@@ -30,11 +30,11 @@ public class NotificationService {
         return notificationRepository.save(notification);
     }
 
-    public List<Notification> getNotificationsForUser(String userId) {
+    public List<Notification> getNotificationsForUser(Long userId) {
         return notificationRepository.findByUserId(userId);
     }
 
-    public List<Notification> getUnreadNotifications(String userId) {
+    public List<Notification> getUnreadNotifications(Long userId) {
         return notificationRepository.findByUserIdAndReadFalse(userId);
     }
 
@@ -56,7 +56,7 @@ public class NotificationService {
         return optional;
     }
 
-    public void deleteNotificationsForUser(String userId) {
+    public void deleteNotificationsForUser(Long userId) {
         notificationRepository.deleteByUserId(userId);
     }
 }
