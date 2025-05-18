@@ -14,7 +14,6 @@ public class GetThreadedCommentsCommand implements CommentCommand {
 
     @Override
     public void execute(CommentService commentService) {
-        // This is a read operation, but we include it for consistency.
         commentService.getThreadedComments(taskId);
     }
 

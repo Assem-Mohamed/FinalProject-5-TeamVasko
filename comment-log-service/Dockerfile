@@ -1,12 +1,14 @@
+# Use a stable JDK image
 FROM openjdk:25-ea-4-jdk-oraclelinux9
 
+# Set the working directory
 WORKDIR /app
 
-COPY ./target/ target/
+# Copy the JAR file (make sure this path is correct)
+COPY target/comment-log-service-0.0.1-SNAPSHOT.jar app.jar
 
-ENV instance_name="Main Instance"
-
+# Expose the application port
 EXPOSE 8080
 
-# We change the name of the build file into lab4 in pom.xml
-ENTRYPOINT ["java", "-jar", "target/task.jar"]
+# Run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]

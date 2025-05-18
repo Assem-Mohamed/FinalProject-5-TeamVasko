@@ -4,10 +4,10 @@ import Scalable.NotificationCommand;
 import Scalable.Services.NotificationService;
 
 public class SendNotificationCommand implements NotificationCommand {
-    private final String userId;
+    private final Long userId;
     private final String message;
 
-    public SendNotificationCommand(String userId, String message) {
+    public SendNotificationCommand(Long userId, String message) {
         this.userId = userId;
         this.message = message;
     }

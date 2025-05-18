@@ -4,7 +4,6 @@ import jakarta.persistence.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "comments")
@@ -104,5 +103,13 @@ public class Comment {
 
         public String getParentCommentId() {
                 return parentCommentId;
+        }
+
+        public List<Long> getTaggedUserIds() {
+                return taggedUserIds;
+        }
+
+        public void setTaggedUserIds(List<Long> taggedUserIds) {
+                this.taggedUserIds = taggedUserIds;
         }
 }

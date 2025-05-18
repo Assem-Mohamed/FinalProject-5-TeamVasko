@@ -25,16 +25,16 @@ public class NotificationService {
 
 
 
-    public Notification sendNotification(String userId, String message) {
+    public Notification sendNotification(Long userId, String message) {
         Notification notification = new Notification(userId, message, false, new Date());
         return notificationRepository.save(notification);
     }
 
-    public List<Notification> getNotificationsForUser(String userId) {
+    public List<Notification> getNotificationsForUser(Long userId) {
         return notificationRepository.findByUserId(userId);
     }
 
-    public List<Notification> getUnreadNotifications(String userId) {
+    public List<Notification> getUnreadNotifications(Long userId) {
         return notificationRepository.findByUserIdAndReadFalse(userId);
     }
 
@@ -56,7 +56,7 @@ public class NotificationService {
         return optional;
     }
 
-    public void deleteNotificationsForUser(String userId) {
+    public void deleteNotificationsForUser(Long userId) {
         notificationRepository.deleteByUserId(userId);
     }
 }

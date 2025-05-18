@@ -4,12 +4,9 @@ import Scalable.Command.*;
 import Scalable.CommentCommand;
 import Scalable.Models.Comment;
 import Scalable.Services.CommentService;
-import Scalable.Command.CommandDispatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -84,4 +81,6 @@ public class CommentController {
         // Note: optionally make this async only if needed
         return ResponseEntity.ok(commentService.getThreadedComments(taskId));
     }
+
+
 }
