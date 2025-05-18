@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
@@ -173,8 +174,42 @@ public class TaskService {
         
     }
 
-    public List<Task> getTasksByUserId(Long userId) {
-        return taskRepository.findByAssigneeIdsContaining(userId);
+//    public List<Task> getTasksByUserId(Long userId) {
+//        return taskRepository.findByAssigneeIdsContaining(userId);
+//    }
+    public List<Task> getTasksByDueDate(LocalDate date) {
+        return taskRepository.findByDueDate(date);
+    }
+
+    public List<Task> getTasksByAssignee(Long userId) {
+        return taskRepository.findByAssigneeId(userId);
+    }
+
+    public List<Task> getTasksByPriority(Priority priority) {
+        return taskRepository.findByPriority(priority);
+    }
+    public List<Task> filterTasks(LocalDate dueDate, Long assigneeId, Priority priority) {
+        List<Task> tasks = taskRepository.findAll();
+
+        if (dueDate != null) {
+            tasks = tasks.stream()
+                    .filter(task -> dueDate.equals(task.getDueDate()))
+                    .collect(Collectors.toList());
+        }
+
+        if (assigneeId != null) {
+            tasks = tasks.stream()
+                    .filter(task -> task.getAssigneeIds().contains(assigneeId))
+                    .collect(Collectors.toList());
+        }
+
+        if (priority != null) {
+            tasks = tasks.stream()
+                    .filter(task -> priority.equals(task.getPriority()))
+                    .collect(Collectors.toList());
+        }
+
+        return tasks;
     }
 
 
