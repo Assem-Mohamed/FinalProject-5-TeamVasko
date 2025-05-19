@@ -1,17 +1,31 @@
 
 
 services:
+#  postgres:
+#    image: postgres:latest
+#    container_name: postgres
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: 1234
+#      POSTGRES_DB: collabboard
+#    ports:
+#      - "5432:5432"
+#    networks:
+#      - collabboard-network
   postgres:
     image: postgres:latest
     container_name: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: collabboard
+      POSTGRES_DB: collabboard  # default db, but others created via init.sql
     ports:
       - "5432:5432"
+    volumes:
+      - ./volumes.postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - collabboard-network
+
 
   redis:
     image: redis:latest
@@ -71,11 +85,14 @@ services:
       context: ./board-task-service
       dockerfile: Dockerfile
     environment:
-      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/taskdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1234
     ports:
       - "8081:8080"
     networks:
       - collabboard-network
+
 
   board-task-service2:
     build:

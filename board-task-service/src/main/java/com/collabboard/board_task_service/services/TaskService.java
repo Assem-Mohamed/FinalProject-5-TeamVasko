@@ -159,31 +159,29 @@ public class TaskService {
             case IMPROVEMENT -> baseTask = new ImprovementTaskFactory().createTask();
             default -> throw new IllegalArgumentException("Unknown task type: " + type);
         }
-        
+
         Task task = new TaskBuilder()
-            .setTitle(title != null ? title : baseTask.getTitle())
-            .setDescription(description != null ? description : baseTask.getDescription())
-            .setPriority(baseTask.getPriority())
-            .setStatus(Status.TODO)
-            .setTaskType(type)
-            .setCreatedBy(createdBy)
-            .setAssigneeIds(new HashSet<>())
-            .build();
-        
+                .setTitle(title != null ? title : baseTask.getTitle())
+                .setDescription(description != null ? description : baseTask.getDescription())
+                .setPriority(baseTask.getPriority())
+                .setStatus(Status.TODO)
+                .setTaskType(type)
+                .setCreatedBy(createdBy)
+                .setAssigneeIds(new HashSet<>())
+                .build();
+
         return taskRepository.save(task);
-        
+
     }
 
-//    public List<Task> getTasksByUserId(Long userId) {
-//        return taskRepository.findByAssigneeIdsContaining(userId);
-//    }
+    public List<Task> getTasksByAssignee(Long userId) {
+        return taskRepository.findByAssigneeIdsContaining(userId);
+    }
+
     public List<Task> getTasksByDueDate(LocalDate date) {
         return taskRepository.findByDueDate(date);
     }
 
-    public List<Task> getTasksByAssignee(Long userId) {
-        return taskRepository.findByAssigneeId(userId);
-    }
 
     public List<Task> getTasksByPriority(Priority priority) {
         return taskRepository.findByPriority(priority);

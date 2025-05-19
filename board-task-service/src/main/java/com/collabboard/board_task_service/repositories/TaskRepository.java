@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByDueDate(LocalDate dueDate);
-    List<Task> findByAssigneeId(Long userId);
+    List<Task> findByAssigneeIdsContaining(Long userId); // Correct method to use
     List<Task> findByPriority(Priority priority);
-    List<Task> findByAssigneeIdsContaining(Long userId);
 }
