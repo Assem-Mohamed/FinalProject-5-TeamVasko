@@ -10,13 +10,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    public static final String NOTIFICATION_QUEUE = "task_notification";
+    public static final String NOTIFICATION_QUEUE = "notification.queue";
     public static final String EXCHANGE = "shared_exchange";
     public static final String NOTIFICATION_ROUTING_KEY = "notification_routing_key";
 
     @Bean
     public Queue queue() {
-        return new Queue(NOTIFICATION_QUEUE);
+        return new Queue(NOTIFICATION_QUEUE,true);
     }
 
     @Bean

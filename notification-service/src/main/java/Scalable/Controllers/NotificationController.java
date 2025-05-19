@@ -26,6 +26,11 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
+    @GetMapping
+    public ResponseEntity<String> testEndpoint() {
+        return ResponseEntity.ok("Notifications endpoint is alive");
+    }
+
     @PostMapping("/send")
     public ResponseEntity<Void> sendNotification(@RequestParam Long userId, @RequestParam String message) {
         NotificationCommand command = new SendNotificationCommand(userId, message);
