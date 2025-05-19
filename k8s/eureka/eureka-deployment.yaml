@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka-service
+  template:
+    metadata:
+      labels:
+        app: eureka-service
+    spec:
+      containers:
+        - name: eureka-service
+          image: assem1908/eureka-service:latest # Change to your Docker Hub image name
+          ports:
+            - containerPort: 8761
+          env:
+            - name: EUREKA_CLIENT_REGISTER_WITH_EUREKA
+              value: "false"
+            - name: EUREKA_CLIENT_FETCH_REGISTRY
+              value: "false"
+            - name: SPRING_PROFILES_ACTIVE
+              value: k8s
