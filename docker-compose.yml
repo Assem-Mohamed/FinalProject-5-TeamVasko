@@ -1,13 +1,20 @@
 
 
 services:
-  postgres:
+  userpostgres:
     image: postgres:latest
-    container_name: postgres
+    container_name: user_postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: collabboard
+      POSTGRES_DB: userdb
+  taskpostgres:
+    image: postgres:latest
+    container_name: task_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: taskdb
     ports:
       - "5432:5432"
     networks:
@@ -24,6 +31,7 @@ services:
   rabbitmq:
     image: rabbitmq:4.0-management
     container_name: rabbitmq
+
     ports:
       - "15672:15672"
       - "5672:5672"
@@ -33,6 +41,7 @@ services:
     networks:
       - collabboard-network
 
+
   mongo:
     image: mongo
     container_name: mongo
@@ -40,6 +49,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+
     ports:
       - "27017:27017"
     networks:
@@ -123,6 +133,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/userdb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_APPLICATION_NAME=UserServiceApplication
 
   user-service2:
     build:
@@ -136,6 +147,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/userdb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_APPLICATION_NAME=UserServiceApplication
   # Comment & Log Service Instances
   comment-log-service1:
     build:
