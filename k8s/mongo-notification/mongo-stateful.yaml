@@ -3,7 +3,7 @@ kind: StatefulSet
 metadata:
   name: mongo-notification
 spec:
-  serviceName: "mongo"  # Must match headless service
+  serviceName: "mongo-notification"  # Must match headless service
   replicas: 1  # Can scale to more for replica set
   selector:
     matchLabels:

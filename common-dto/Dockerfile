@@ -5,7 +5,7 @@ FROM openjdk:25-ea-4-jdk-oraclelinux9
 WORKDIR /app
 
 # Copy the JAR file (make sure this path is correct)
-COPY target/search-service-0.0.1-SNAPSHOT.jar app.jar
+COPY target/common-dto-1.0-SNAPSHOT.jar app.jar
 
 # Expose the application port
 EXPOSE 8080

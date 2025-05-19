@@ -62,7 +62,7 @@ public class NotificationController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteAllForUser(@PathVariable String userId) {
+    public ResponseEntity<Void> deleteAllForUser(@PathVariable Long userId) {
         NotificationCommand command = new DeleteNotificationsCommand(userId);
         commandDispatcher.dispatch("notification.exchange", "notification.routingKey", command);
         return ResponseEntity.noContent().build();

@@ -35,7 +35,7 @@ spec:
                   name: postgres-task-secret
                   key: POSTGRES_PASSWORD
           volumeMounts:
-            - name: postgres-persistent-storage
+            - name: postgres-task-storage
               mountPath: /var/lib/postgresql/data
   volumeClaimTemplates:
     - metadata:
