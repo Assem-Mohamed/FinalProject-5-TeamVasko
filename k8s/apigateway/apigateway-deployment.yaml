@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: apigateway-service
-          image: vasko/apigateway
+          image: assem1908/apigateway-service:latest
           ports:
             - containerPort: 8080
           env:
@@ -23,11 +23,11 @@ spec:
             - name: SPRING_MAIN_WEB_APPLICATION_TYPE
               value: reactive
             - name: SPRING_CLOUD_GATEWAY_ROUTES_0_ID
-              value: task-service
+              value: board-task-service
             - name: SPRING_CLOUD_GATEWAY_ROUTES_0_URI
-              value: http://task-service:8080
+              value: http://board-task-service:8080
             - name: SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0
-              value: Path=/task/**
+              value: Path=/api/tasks/**
 
             - name: SPRING_CLOUD_GATEWAY_ROUTES_1_ID
               value: user-service

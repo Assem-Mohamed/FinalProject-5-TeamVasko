@@ -3,10 +3,11 @@ kind: Service
 metadata:
   name: board-task-service
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: board-task-service
   ports:
     - port: 8080
       targetPort: 8080
+      nodePort: 30080
 

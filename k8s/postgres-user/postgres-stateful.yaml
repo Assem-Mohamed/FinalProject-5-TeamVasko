@@ -35,7 +35,7 @@ spec:
                   name: postgres-user-secret
                   key: POSTGRES_PASSWORD
           volumeMounts:
-            - name: postgres-persistent-storage
+            - name: postgres-user-storage
               mountPath: /var/lib/postgresql/data
   volumeClaimTemplates:
     - metadata:
