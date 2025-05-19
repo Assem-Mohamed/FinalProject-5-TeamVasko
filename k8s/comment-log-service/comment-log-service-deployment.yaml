@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: comment-log-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: comment-log-service
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: comment-log-service
-          image: vasko/comment
+          image: assem1908/comment-log-service:latest
           ports:
             - containerPort: 8080
           env:

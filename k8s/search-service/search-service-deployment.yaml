@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: search-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: search-service
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: search-service
-          image: vasko/search
+          image: assem1908/search-service:latest
           ports:
             - containerPort: 8080
           env:
