@@ -5,9 +5,9 @@ import com.example.CommentLogService.Models.Comment;
 import com.example.CommentLogService.Services.CommentService;
 
 public class CreateCommentCommand implements CommentCommand {
-    private Comment comment;
 
-    public CreateCommentCommand() {}
+    private final Comment comment;
+
     public CreateCommentCommand(Comment comment) {
         this.comment = comment;
     }
@@ -16,7 +16,4 @@ public class CreateCommentCommand implements CommentCommand {
     public void execute(CommentService commentService) {
         commentService.createComment(comment);
     }
-
-    public Comment getComment() { return comment; }
-    public void setComment(Comment comment) { this.comment = comment; }
 }

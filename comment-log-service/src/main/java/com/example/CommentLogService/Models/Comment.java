@@ -22,6 +22,13 @@ public class Comment implements Serializable {
         private String parentCommentId;
         private List<Long> taggedUserIds;
 
+        public Comment(String content, Long taskId, Instant createdAt, Long authorId) {
+                this.content = content;
+                this.taskId = taskId;
+                this.createdAt = createdAt;
+                this.authorId = authorId;
+        }
+
         public Comment() {
         }
         public Comment(Long taskId, Long authorId, String content, Instant createdAt) {
@@ -45,6 +52,10 @@ public class Comment implements Serializable {
                 this.taggedUserIds = taggedUserIds;
         }
 
+        public Comment(Long taskId, boolean pinned) {
+                this.taskId = taskId;
+                this.pinned = pinned;
+        }
 
         public void setId(String id) {
                 this.id = id;
