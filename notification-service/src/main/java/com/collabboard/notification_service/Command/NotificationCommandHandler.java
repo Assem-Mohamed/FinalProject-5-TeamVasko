@@ -1,11 +1,11 @@
-package Scalable.Command;
+package com.collabboard.notification_service.Command;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import Scalable.NotificationCommand;
-import Scalable.Services.NotificationService;
+import com.collabboard.notification_service.NotificationCommand;
+import com.collabboard.notification_service.Services.NotificationService;
 
 @Component
 public class NotificationCommandHandler {

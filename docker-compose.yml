@@ -58,6 +58,7 @@ services:
       - "27017:27017"
     networks:
       - collabboard-network
+
   nginx:
     image: nginx:latest
     container_name: nginx
@@ -180,7 +181,10 @@ services:
       - "8085:8080"
     networks:
       - collabboard-network
+    depends_on:
+      - rabbitmq
     environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_APPLICATION_NAME=CommentLogService
       - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/commentdb?authSource=admin
       - SPRING_DATA_MONGODB_DATABASE=commentdb
@@ -198,6 +202,22 @@ services:
       - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/commentdb?authSource=admin
       - SPRING_DATA_MONGODB_DATABASE=commentdb
   # Notification Service Instances
+#  notification-service1:
+#    build:
+#      context: ./notification-service
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8087:8080"
+#    networks:
+#      - collabboard-network
+#    environment:
+#      - SPRING_APPLICATION_NAME=NotificationService
+#      - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/notificationdb?authSource=admin
+#      - SPRING_DATA_MONGODB_DATABASE=notificationdb
+#      - SPRING_RABBITMQ_HOST=rabbitmq
+#      - SPRING_RABBITMQ_PORT=5672
+#      - SPRING_RABBITMQ_USERNAME=guest
+#      - SPRING_RABBITMQ_PASSWORD=guest
   notification-service1:
     build:
       context: ./notification-service
@@ -206,14 +226,18 @@ services:
       - "8087:8080"
     networks:
       - collabboard-network
+    depends_on:
+      - mongo
+      - rabbitmq
     environment:
-    - SPRING_APPLICATION_NAME=NotificationService
-    - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/notificationdb?authSource=admin
-    - SPRING_DATA_MONGODB_DATABASE=notificationdb
-    - SPRING_RABBITMQ_HOST=rabbitmq
-    - SPRING_RABBITMQ_PORT=5672
-    - SPRING_RABBITMQ_USERNAME=guest
-    - SPRING_RABBITMQ_PASSWORD=guest
+      - SPRING_APPLICATION_NAME=NotificationService
+      - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/notificationdb?authSource=admin
+      - SPRING_DATA_MONGODB_DATABASE=notificationdb
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+
 
   notification-service2:
     build:

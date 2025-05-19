@@ -1,7 +1,7 @@
-package Scalable;
+package com.collabboard.notification_service;
 
 
-import Scalable.Services.NotificationService;
+import com.collabboard.notification_service.Services.NotificationService;
 
 import java.io.Serializable;
 

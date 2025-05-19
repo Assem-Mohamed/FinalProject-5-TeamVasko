@@ -1,9 +1,9 @@
-package Scalable.Controllers;
+package com.collabboard.notification_service.Controllers;
 
-import Scalable.Command.*;
-import Scalable.Models.Notification;
-import Scalable.NotificationCommand;
-import Scalable.Services.NotificationService;
+import com.collabboard.notification_service.Command.*;
+import com.collabboard.notification_service.Models.Notification;
+import com.collabboard.notification_service.NotificationCommand;
+import com.collabboard.notification_service.Services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

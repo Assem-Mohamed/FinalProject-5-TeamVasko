@@ -1,6 +1,6 @@
-package Scalable.rabbitmq;
+package com.collabboard.notification_service.rabbitmq;
 
-import Scalable.Services.NotificationService;
+import com.collabboard.notification_service.Services.NotificationService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 

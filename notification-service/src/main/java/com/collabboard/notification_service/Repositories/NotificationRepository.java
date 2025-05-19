@@ -1,6 +1,6 @@
-package Scalable.Repositories;
+package com.collabboard.notification_service.Repositories;
 
-import Scalable.Models.Notification;
+import com.collabboard.notification_service.Models.Notification;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 

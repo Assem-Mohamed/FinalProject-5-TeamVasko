@@ -1,7 +1,7 @@
-package Scalable.Services;
+package com.collabboard.notification_service.Services;
 
-import Scalable.Models.Notification;
-import Scalable.Repositories.NotificationRepository;
+import com.collabboard.notification_service.Models.Notification;
+import com.collabboard.notification_service.Repositories.NotificationRepository;
 import com.mongodb.client.MongoClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

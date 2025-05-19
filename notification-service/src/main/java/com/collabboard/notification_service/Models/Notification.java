@@ -1,4 +1,4 @@
-package Scalable.Models;
+package com.collabboard.notification_service.Models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

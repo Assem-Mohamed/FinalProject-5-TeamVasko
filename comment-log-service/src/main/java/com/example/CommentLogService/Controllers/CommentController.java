@@ -24,13 +24,13 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping
-    public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
-        comment.setId(new ObjectId().toString());
-        CommentCommand command = new CreateCommentCommand(comment);
-        commandDispatcher.dispatch("comment.exchange", "comment.routingKey", command);
-        return ResponseEntity.accepted().body(comment);
-    }
+        @PostMapping
+        public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
+            comment.setId(new ObjectId().toString());
+            CommentCommand command = new CreateCommentCommand(comment);
+            commandDispatcher.dispatch("comment.exchange", "comment.routingKey", command);
+            return ResponseEntity.accepted().body(comment);
+        }
 
     @GetMapping("/{id}")
     public ResponseEntity<Comment> getCommentById(@PathVariable String id) {

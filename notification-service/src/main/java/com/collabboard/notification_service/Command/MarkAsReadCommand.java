@@ -1,7 +1,7 @@
-package Scalable.Command;
+package com.collabboard.notification_service.Command;
 
-import Scalable.NotificationCommand;
-import Scalable.Services.NotificationService;
+import com.collabboard.notification_service.NotificationCommand;
+import com.collabboard.notification_service.Services.NotificationService;
 
 public class MarkAsReadCommand implements NotificationCommand {
     private final String notificationId;
