@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
@@ -158,23 +159,55 @@ public class TaskService {
             case IMPROVEMENT -> baseTask = new ImprovementTaskFactory().createTask();
             default -> throw new IllegalArgumentException("Unknown task type: " + type);
         }
-        
+
         Task task = new TaskBuilder()
-            .setTitle(title != null ? title : baseTask.getTitle())
-            .setDescription(description != null ? description : baseTask.getDescription())
-            .setPriority(baseTask.getPriority())
-            .setStatus(Status.TODO)
-            .setTaskType(type)
-            .setCreatedBy(createdBy)
-            .setAssigneeIds(new HashSet<>())
-            .build();
-        
+                .setTitle(title != null ? title : baseTask.getTitle())
+                .setDescription(description != null ? description : baseTask.getDescription())
+                .setPriority(baseTask.getPriority())
+                .setStatus(Status.TODO)
+                .setTaskType(type)
+                .setCreatedBy(createdBy)
+                .setAssigneeIds(new HashSet<>())
+                .build();
+
         return taskRepository.save(task);
-        
+
     }
 
-    public List<Task> getTasksByUserId(Long userId) {
+    public List<Task> getTasksByAssignee(Long userId) {
         return taskRepository.findByAssigneeIdsContaining(userId);
+    }
+
+    public List<Task> getTasksByDueDate(LocalDate date) {
+        return taskRepository.findByDueDate(date);
+    }
+
+
+    public List<Task> getTasksByPriority(Priority priority) {
+        return taskRepository.findByPriority(priority);
+    }
+    public List<Task> filterTasks(LocalDate dueDate, Long assigneeId, Priority priority) {
+        List<Task> tasks = taskRepository.findAll();
+
+        if (dueDate != null) {
+            tasks = tasks.stream()
+                    .filter(task -> dueDate.equals(task.getDueDate()))
+                    .collect(Collectors.toList());
+        }
+
+        if (assigneeId != null) {
+            tasks = tasks.stream()
+                    .filter(task -> task.getAssigneeIds().contains(assigneeId))
+                    .collect(Collectors.toList());
+        }
+
+        if (priority != null) {
+            tasks = tasks.stream()
+                    .filter(task -> priority.equals(task.getPriority()))
+                    .collect(Collectors.toList());
+        }
+
+        return tasks;
     }
 
 

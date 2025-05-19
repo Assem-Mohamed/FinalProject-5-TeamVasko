@@ -86,12 +86,33 @@ public class TaskController {
         return ResponseEntity.ok(taskService.addDueDateIfMissing(id, dueDate));
     }
 
-    @GetMapping("/user/{userId}")
-    public List<TaskDTO> getTasksByUser(@PathVariable Long userId) {
-        List<Task> tasks = taskService.getTasksByUserId(userId);
-        return tasks.stream()
-                .map(TaskMapper::toDTO)
-                .collect(Collectors.toList());
+    @GetMapping("/due-date/{date}")
+    public ResponseEntity<List<Task>> getTasksByDueDate(@PathVariable String date) {
+        LocalDate localDate = LocalDate.parse(date);
+        return ResponseEntity.ok(taskService.getTasksByDueDate(localDate));
     }
+
+
+    @GetMapping("/priority/{priority}")
+    public ResponseEntity<List<Task>> getTasksByPriority(@PathVariable Priority priority) {
+        return ResponseEntity.ok(taskService.getTasksByPriority(priority));
+    }
+
+
+    @GetMapping("/assignee/{userId}")
+    public ResponseEntity<List<Task>> getTasksByAssignee(@PathVariable Long userId) {
+        return ResponseEntity.ok(taskService.getTasksByAssignee(userId));
+    }
+    @GetMapping("/filter")
+    public ResponseEntity<List<Task>> filterTasks(
+            @RequestParam(required = false) LocalDate dueDate,
+            @RequestParam(required = false) Long assigneeId,
+            @RequestParam(required = false) Priority priority) {
+
+        List<Task> filteredTasks = taskService.filterTasks(dueDate, assigneeId, priority);
+        return ResponseEntity.ok(filteredTasks);
+    }
+
+
 
 }

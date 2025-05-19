@@ -108,8 +108,49 @@ public class UserController {
     @GetMapping("/by-username/{username}")
     public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username) {
         Optional<UserDTO> user = userService.getUserByUsername(username);
-        return user.map(u -> ResponseEntity.ok(new UserDTO(u.getId(), u.getUsername(), u.getEmail())))
+        return user.map(u -> ResponseEntity.ok(new UserDTO(u.getId(), u.getUsername(), u.getEmail(), u.getPassword())))
                 .orElse(ResponseEntity.notFound().build());
     }
+
+
+    /// CRUDS
+    // CREATE a new user
+    @PostMapping("/")
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+        UserDTO createdUser = userService.createUser(userDTO);
+        return ResponseEntity.ok(createdUser);
+    }
+
+    // READ all users
+    @GetMapping("/")
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+    // READ user by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        Optional<UserDTO> user = userService.getUserById(id);
+        return user.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // UPDATE user by ID
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO updatedUserDTO) {
+        Optional<UserDTO> updatedUser = userService.updateUser(id, updatedUserDTO);
+        return updatedUser.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // DELETE user by ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        boolean deleted = userService.deleteUser(id);
+        return deleted ? ResponseEntity.ok("User deleted successfully")
+                : ResponseEntity.status(404).body("User not found");
+    }
+
 
 }
