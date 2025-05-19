@@ -1,7 +1,7 @@
 
 
 services:
-  userpostgres:
+  user_postgres:
     image: postgres:latest
     container_name: user_postgres
     environment:
@@ -9,10 +9,10 @@ services:
       POSTGRES_PASSWORD: 1234
       POSTGRES_DB: userdb
     ports:
-      - "5433:5432"
+      - "5432:5432"
     networks:
       - collabboard-network
-  taskpostgres:
+  task_postgres:
     image: postgres:latest
     container_name: task_postgres
     environment:
@@ -89,7 +89,7 @@ services:
     networks:
       - collabboard-network
     environment:
-      - SPRING_APPLICATION_NAME=UserServiceApplication
+      - SPRING_APPLICATION_NAME=BoardAndTaskServiceApplication
       - SPRING_DATASOURCE_URL=jdbc:postgresql://task_postgres:5432/taskdb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=1234
@@ -145,6 +145,7 @@ services:
       - SPRING_JPA_SHOW_SQL=true
       - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
       - SPRING_JPA_PROPERTIES_HIBERNATE_USE_SQL_COMMENTS=true
+      - SERVER_PORT=8080
 
 
 
@@ -168,6 +169,7 @@ services:
       - SPRING_JPA_SHOW_SQL=true
       - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
       - SPRING_JPA_PROPERTIES_HIBERNATE_USE_SQL_COMMENTS=true
+      - SERVER_PORT=8080
 
   # Comment & Log Service Instances
   comment-log-service1:
