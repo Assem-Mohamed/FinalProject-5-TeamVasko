@@ -112,7 +112,7 @@ public class UserController {
     }
 
 
-    /// CRUDS
+    // CRUDS
     // CREATE a new user
     @PostMapping("/")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {

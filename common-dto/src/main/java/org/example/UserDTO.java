@@ -6,6 +6,9 @@ public class UserDTO {
     private String email;
     private String password;
 
+    public UserDTO() {
+
+    }
 
     public UserDTO(Long id, String username, String email, String password) {
         this.id = id;
