@@ -8,6 +8,10 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
       POSTGRES_DB: userdb
+    ports:
+      - "5433:5432"
+    networks:
+      - collabboard-network
   taskpostgres:
     image: postgres:latest
     container_name: task_postgres
@@ -16,7 +20,7 @@ services:
       POSTGRES_PASSWORD: 1234
       POSTGRES_DB: taskdb
     ports:
-      - "5432:5432"
+      - "5434:5432"
     networks:
       - collabboard-network
 
@@ -86,14 +90,14 @@ services:
       - collabboard-network
     environment:
       - SPRING_APPLICATION_NAME=UserServiceApplication
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/userdb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://task_postgres:5432/taskdb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=1234
-      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
-      - SPRING_JPA_DATABASE-PLATFORM=org.hibernate.dialect.PostgreSQLDialect
-      - SPRING_JPA_HIBERNATE_DDL-AUTO=create-drop
-      - SPRING_JPA_GENERATE-DDL=true
-      - SPRING_JPA_SHOW-SQL=true
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      - SPRING_JPA_GENERATE_DDL=true
+      - SPRING_JPA_SHOW_SQL=true
       - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
       - SPRING_JPA_PROPERTIES_HIBERNATE_USE_SQL_COMMENTS=true
       - SERVER_PORT=8080
@@ -105,7 +109,7 @@ services:
     environment:
       - SERVER_PORT=8080
       - SPRING_APPLICATION_NAME=BoardAndTaskServiceApplication
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/taskdb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://task_postgres:5432/taskdb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=1234
       - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
@@ -130,10 +134,19 @@ services:
     networks:
       - collabboard-network
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/userdb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://user_postgres:5432/userdb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=1234
       - SPRING_APPLICATION_NAME=UserServiceApplication
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      - SPRING_JPA_GENERATE_DDL=true
+      - SPRING_JPA_SHOW_SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_USE_SQL_COMMENTS=true
+
+
 
   user-service2:
     build:
@@ -144,10 +157,18 @@ services:
     networks:
       - collabboard-network
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/userdb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://user_postgres:5432/userdb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=1234
       - SPRING_APPLICATION_NAME=UserServiceApplication
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      - SPRING_JPA_GENERATE_DDL=true
+      - SPRING_JPA_SHOW_SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_USE_SQL_COMMENTS=true
+
   # Comment & Log Service Instances
   comment-log-service1:
     build:
