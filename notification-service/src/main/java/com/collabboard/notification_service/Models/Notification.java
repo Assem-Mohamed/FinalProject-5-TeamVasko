@@ -29,6 +29,9 @@ public class Notification {
         this.timestamp = new Date();
     }
 
+    public Notification() {
+    }
+
     public String getId() {
         return id;
     }

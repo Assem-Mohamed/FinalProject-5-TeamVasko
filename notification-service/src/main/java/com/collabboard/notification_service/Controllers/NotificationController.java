@@ -1,5 +1,6 @@
 package com.collabboard.notification_service.Controllers;
 
+
 import com.collabboard.notification_service.Command.*;
 import com.collabboard.notification_service.Models.Notification;
 import com.collabboard.notification_service.Services.NotificationService;
@@ -57,3 +58,4 @@ public class NotificationController {
         commandExecutor.execute(command);
     }
 }
+
