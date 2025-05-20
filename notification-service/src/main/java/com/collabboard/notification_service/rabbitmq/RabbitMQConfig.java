@@ -1,4 +1,4 @@
-package com.example.CommentLogService.rabbitmq;
+package com.collabboard.notification_service.rabbitmq;
 
 
 import org.springframework.amqp.core.Queue;
@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    public static final String COMMENT_QUEUE = "comment_queue";
+    public static final String NOTIFICATION_QUEUE = "notification_queue";
 
     @Bean
     public Queue notificationQueue() {
-        return new Queue(COMMENT_QUEUE, true); // durable
+        return new Queue(NOTIFICATION_QUEUE, true); // durable
     }
 }

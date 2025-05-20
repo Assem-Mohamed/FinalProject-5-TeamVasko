@@ -2,28 +2,21 @@ package com.example.CommentLogService.Command;
 
 
 import com.example.CommentLogService.CommentCommand;
+import com.example.CommentLogService.Models.Comment;
 import com.example.CommentLogService.Services.CommentService;
 
-public class PinCommentCommand implements CommentCommand {
-    private String commentId;
+public class PinCommentCommand implements CommentCommand<Comment> {
 
-    public PinCommentCommand() {}
+    private final CommentService commentService;
+    private final String commentId;
 
-    public PinCommentCommand(String commentId) {
+    public PinCommentCommand(CommentService commentService, String commentId) {
+        this.commentService = commentService;
         this.commentId = commentId;
     }
 
     @Override
-    public void execute(CommentService commentService) {
-        commentService.pinComment(commentId);
-    }
-
-    public String getCommentId() {
-        return commentId;
-    }
-
-    public void setCommentId(String commentId) {
-        this.commentId = commentId;
+    public Comment execute() {
+        return commentService.pinComment(commentId);
     }
 }
-

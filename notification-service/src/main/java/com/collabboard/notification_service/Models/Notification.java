@@ -1,4 +1,4 @@
-package Scalable.Models;
+package com.collabboard.notification_service.Models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -27,6 +27,9 @@ public class Notification {
         this.message = message;
         this.read = false;
         this.timestamp = new Date();
+    }
+
+    public Notification() {
     }
 
     public String getId() {

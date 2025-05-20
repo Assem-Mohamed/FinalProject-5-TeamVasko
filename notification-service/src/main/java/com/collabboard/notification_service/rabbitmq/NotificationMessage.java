@@ -1,4 +1,4 @@
-package Scalable.rabbitmq;
+package com.collabboard.notification_service.rabbitmq;
 
 public class NotificationMessage {
     private Long recipientId;

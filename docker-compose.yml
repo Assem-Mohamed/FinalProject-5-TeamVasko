@@ -23,11 +23,6 @@ services:
       - "5434:5432"
     networks:
       - collabboard-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d taskdb"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
   redis:
     image: redis:latest
@@ -51,38 +46,28 @@ services:
       - collabboard-network
 
 
-  mongo:
-    image: mongo
-    container_name: mongo
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
 
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
     ports:
-      - "27017:27017"
+      - "80:80"
+    volumes:
+      - ./volumes/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - board-task-service1
+      - board-task-service2
+      - user-service1
+      - user-service2
+      - comment-log-service1
+      - comment-log-service2
+      - notification-service1
+      - notification-service2
+      - search-service1
+      - search-service2
     networks:
       - collabboard-network
-#  nginx:
-#    image: nginx:latest
-#    container_name: nginx
-#    ports:
-#      - "80:80"
-#    volumes:
-#      - ./volumes/nginx/nginx.conf:/etc/nginx/nginx.conf
-#    depends_on:
-#      - board-task-service1
-#      - board-task-service2
-#      - user-service1
-#      - user-service2
-#      - comment-log-service1
-#      - comment-log-service2
-#      - notification-service1
-#      - notification-service2
-#      - search-service1
-#      - search-service2
-#    networks:
-#      - collabboard-network
 
   # Board & Task Service Instances
   board-task-service1:
@@ -106,9 +91,6 @@ services:
       - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
       - SPRING_JPA_PROPERTIES_HIBERNATE_USE_SQL_COMMENTS=true
       - SERVER_PORT=8080
-    depends_on:
-      task_postgres:
-        condition: service_healthy
 
   board-task-service2:
     build:
@@ -139,8 +121,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8083:8080"
-    depends_on:
-      - user_postgres
     networks:
       - collabboard-network
     environment:
@@ -180,7 +160,17 @@ services:
       - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
       - SPRING_JPA_PROPERTIES_HIBERNATE_USE_SQL_COMMENTS=true
       - SERVER_PORT=8080
-
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    networks:
+      - collabboard-network
   # Comment & Log Service Instances
   comment-log-service1:
     build:
@@ -192,6 +182,7 @@ services:
       - collabboard-network
     depends_on:
       - rabbitmq
+      - mongo
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_APPLICATION_NAME=CommentLogService
@@ -211,6 +202,22 @@ services:
       - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/commentdb?authSource=admin
       - SPRING_DATA_MONGODB_DATABASE=commentdb
   # Notification Service Instances
+#  notification-service1:
+#    build:
+#      context: ./notification-service
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8087:8080"
+#    networks:
+#      - collabboard-network
+#    environment:
+#      - SPRING_APPLICATION_NAME=NotificationService
+#      - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/notificationdb?authSource=admin
+#      - SPRING_DATA_MONGODB_DATABASE=notificationdb
+#      - SPRING_RABBITMQ_HOST=rabbitmq
+#      - SPRING_RABBITMQ_PORT=5672
+#      - SPRING_RABBITMQ_USERNAME=guest
+#      - SPRING_RABBITMQ_PASSWORD=guest
   notification-service1:
     build:
       context: ./notification-service
@@ -219,14 +226,18 @@ services:
       - "8087:8080"
     networks:
       - collabboard-network
+    depends_on:
+      - mongo
+      - rabbitmq
     environment:
-    - SPRING_APPLICATION_NAME=NotificationService
-    - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/notificationdb?authSource=admin
-    - SPRING_DATA_MONGODB_DATABASE=notificationdb
-    - SPRING_RABBITMQ_HOST=rabbitmq
-    - SPRING_RABBITMQ_PORT=5672
-    - SPRING_RABBITMQ_USERNAME=guest
-    - SPRING_RABBITMQ_PASSWORD=guest
+      - SPRING_APPLICATION_NAME=NotificationService
+      - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/notificationdb?authSource=admin
+      - SPRING_DATA_MONGODB_DATABASE=notificationdb
+      - SPRING_RABBITMQ_HOST=rabbitmq
+#      - SPRING_RABBITMQ_PORT=5672
+#      - SPRING_RABBITMQ_USERNAME=guest
+#      - SPRING_RABBITMQ_PASSWORD=guest
+
 
   notification-service2:
     build:
@@ -241,9 +252,9 @@ services:
       - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/notificationdb?authSource=admin
       - SPRING_DATA_MONGODB_DATABASE=notificationdb
       - SPRING_RABBITMQ_HOST=rabbitmq
-      - SPRING_RABBITMQ_PORT=5672
-      - SPRING_RABBITMQ_USERNAME=guest
-      - SPRING_RABBITMQ_PASSWORD=guest
+#      - SPRING_RABBITMQ_PORT=5672
+#      - SPRING_RABBITMQ_USERNAME=guest
+#      - SPRING_RABBITMQ_PASSWORD=guest
   # Search Service Instances
   search-service1:
     build:
