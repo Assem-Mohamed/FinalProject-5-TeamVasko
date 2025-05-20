@@ -3,7 +3,7 @@
   metadata:
     name: notification-service
   spec:
-    replicas: 2
+    replicas: 1
     selector:
       matchLabels:
         app: notification-service
@@ -14,7 +14,7 @@
       spec:
         containers:
           - name: notification-service
-            image: vasko/notification
+            image: assem1908/notification-service:latest
             ports:
               - containerPort: 8080
             env:

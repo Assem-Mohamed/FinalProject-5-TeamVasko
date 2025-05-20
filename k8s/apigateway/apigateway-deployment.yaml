@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: apigateway-service
-          image: ziadhegazy99/apigateway
+          image: assem1908/apigateway-service:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
@@ -22,23 +23,51 @@ spec:
               value: k8s
             - name: SPRING_MAIN_WEB_APPLICATION_TYPE
               value: reactive
+            # Eureka discovery (optional)
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://eureka:8761/eureka
+            - name: EUREKA_INSTANCE_PREFERIPADDRESS
+              value: "true"
+            # Routes...
             - name: SPRING_CLOUD_GATEWAY_ROUTES_0_ID
-              value: customer-service
+              value: board-task-service
             - name: SPRING_CLOUD_GATEWAY_ROUTES_0_URI
-              value: http://customer-service:8080
+              value: http://board-task-service:8080
             - name: SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0
-              value: Path=/customers/**
-
+              value: Path=/api/tasks/**
             - name: SPRING_CLOUD_GATEWAY_ROUTES_1_ID
-              value: fraud-service
+              value: user-service
             - name: SPRING_CLOUD_GATEWAY_ROUTES_1_URI
-              value: http://fraud-service:8080
+              value: http://user-service:8080
             - name: SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0
-              value: Path=/frauds/**
-
+              value: Path=/api/user/**
             - name: SPRING_CLOUD_GATEWAY_ROUTES_2_ID
               value: notification-service
             - name: SPRING_CLOUD_GATEWAY_ROUTES_2_URI
               value: http://notification-service:8080
             - name: SPRING_CLOUD_GATEWAY_ROUTES_2_PREDICATES_0
               value: Path=/notifications/**
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_3_ID
+              value: search-service
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_3_URI
+              value: http://search-service:8080
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_3_PREDICATES_0
+              value: Path=/api/search/**
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_4_ID
+              value: comment-log-service
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_4_URI
+              value: http://comment-log-service:8080
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_4_PREDICATES_0
+              value: Path=/comments/**
+#          livenessProbe:
+#            httpGet:
+#              path: /actuator/health
+#              port: 8080
+#            initialDelaySeconds: 10
+#            periodSeconds: 15
+#          readinessProbe:
+#            httpGet:
+#              path: /actuator/health
+#              port: 8080
+#            initialDelaySeconds: 5
+#            periodSeconds: 10

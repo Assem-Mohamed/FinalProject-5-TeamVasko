@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: board-task-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: board-task-service
@@ -14,14 +14,14 @@ spec:
     spec:
       containers:
         - name: board-task-service
-          image: vasko/task
+          image: assem1908/board-task-service:latest
           ports:
             - containerPort: 8080
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: k8s
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://postgres-0.postgres:5432/task_db
+              value: jdbc:postgresql://postgres-task-0.postgres-task:5432/task_db
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:

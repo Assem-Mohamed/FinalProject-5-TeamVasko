@@ -8,5 +8,6 @@ com\collabboard\search_service\models\SearchContext.class
 com\collabboard\search_service\search\strategy\SearchStrategy.class
 com\collabboard\search_service\services\SearchService.class
 com\collabboard\search_service\search\strategy\FilterByAssigneeStrategy.class
+com\collabboard\search_service\Clients\TaskClient.class
 com\collabboard\search_service\models\SearchRequest.class
 com\collabboard\search_service\config\RedisCacheConfig.class
