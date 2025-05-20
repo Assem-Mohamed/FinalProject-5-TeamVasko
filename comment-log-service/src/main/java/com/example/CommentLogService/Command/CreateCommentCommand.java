@@ -4,19 +4,18 @@ import com.example.CommentLogService.CommentCommand;
 import com.example.CommentLogService.Models.Comment;
 import com.example.CommentLogService.Services.CommentService;
 
-public class CreateCommentCommand implements CommentCommand {
-    private Comment comment;
+public class CreateCommentCommand implements CommentCommand<Comment> {
 
-    public CreateCommentCommand() {}
-    public CreateCommentCommand(Comment comment) {
+    private final CommentService commentService;
+    private final Comment comment;
+
+    public CreateCommentCommand(CommentService commentService, Comment comment) {
+        this.commentService = commentService;
         this.comment = comment;
     }
 
     @Override
-    public void execute(CommentService commentService) {
-        commentService.createComment(comment);
+    public Comment execute() {
+        return commentService.createComment(comment);
     }
-
-    public Comment getComment() { return comment; }
-    public void setComment(Comment comment) { this.comment = comment; }
 }

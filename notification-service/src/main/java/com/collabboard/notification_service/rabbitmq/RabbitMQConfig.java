@@ -1,4 +1,4 @@
-package Scalable.rabbitmq;
+package com.collabboard.notification_service.rabbitmq;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

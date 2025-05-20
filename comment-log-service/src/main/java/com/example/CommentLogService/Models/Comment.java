@@ -1,10 +1,13 @@
 package com.example.CommentLogService.Models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Document(collection = "comments")
@@ -22,8 +25,26 @@ public class Comment implements Serializable {
         private String parentCommentId;
         private List<Long> taggedUserIds;
 
+        public Comment(String content, Long taskId, Instant createdAt, Long authorId) {
+                this.content = content;
+                this.taskId = taskId;
+                this.createdAt = createdAt;
+                this.authorId = authorId;
+        }
+
         public Comment() {
         }
+//        @JsonCreator
+//        public Comment(@JsonProperty("taskId") Long taskId,
+//                       @JsonProperty("authorId") Long authorId,
+//                       @JsonProperty("content") String content,
+//                       @JsonProperty("createdAt") Instant createdAt) {
+//                this.taskId = taskId;
+//                this.authorId = authorId;
+//                this.content = content;
+//                this.createdAt = createdAt;
+//        }
+
         public Comment(Long taskId, Long authorId, String content, Instant createdAt) {
                 this.taskId = taskId;
                 this.authorId = authorId;
@@ -45,6 +66,10 @@ public class Comment implements Serializable {
                 this.taggedUserIds = taggedUserIds;
         }
 
+        public Comment(Long taskId, boolean pinned) {
+                this.taskId = taskId;
+                this.pinned = pinned;
+        }
 
         public void setId(String id) {
                 this.id = id;
