@@ -4,6 +4,7 @@ import com.example.CommentLogService.Command.*;
 import com.example.CommentLogService.CommentCommand;
 import com.example.CommentLogService.Models.Comment;
 import com.example.CommentLogService.Services.CommentService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +25,11 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createComment(@RequestBody Comment comment) {
+    public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
+        comment.setId(new ObjectId().toString());
         CommentCommand command = new CreateCommentCommand(comment);
         commandDispatcher.dispatch("comment.exchange", "comment.routingKey", command);
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.accepted().body(comment);
     }
 
     @GetMapping("/{id}")
