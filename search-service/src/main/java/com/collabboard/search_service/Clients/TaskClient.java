@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.util.List;
 
-@FeignClient(name = "task-service", url = "${task-service.url}")
+@FeignClient(name = "task-service", url = "http://board-task-service1:8081")
 public interface TaskClient {
 
     @GetMapping("/api/tasks/filter")

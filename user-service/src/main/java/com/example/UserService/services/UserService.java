@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private static UserService instance;
+//    private static UserService instance;
 
     private final UserRepository userRepository;
     private final AuthStrategy authStrategy;
@@ -35,12 +35,12 @@ public class UserService {
         this.authStrategy = authStrategy;
     }
 
-    public static UserService getInstance(UserRepository repo, AuthStrategy strategy) {
-        if (instance == null) {
-            instance = new UserService(repo, strategy);
-        }
-        return instance;
-    }
+//    public static UserService getInstance(UserRepository repo, AuthStrategy strategy) {
+//        if (instance == null) {
+//            instance = new UserService(repo, strategy);
+//        }
+//        return instance;
+//    }
 
     public boolean login(String email, String password) {
         if (authStrategy.authenticate(email, password)) {

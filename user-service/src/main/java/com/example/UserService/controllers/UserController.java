@@ -2,8 +2,6 @@ package com.example.UserService.controllers;
 
 import com.example.UserService.Clients.SearchClient;
 import com.example.UserService.Clients.TaskClient;
-import com.example.UserService.auth.strategy.AuthStrategy;
-import com.example.UserService.repositories.UserRepository;
 import com.example.UserService.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.example.TaskDTO;
@@ -28,9 +26,13 @@ public class UserController {
     @Autowired private TaskClient taskClient;
     @Autowired private SearchClient searchClient;
 
+//    @Autowired
+//    public UserController(UserRepository userRepository, AuthStrategy authStrategy) {
+//        this.userService = UserService.getInstance(userRepository, authStrategy);
+//    }
     @Autowired
-    public UserController(UserRepository userRepository, AuthStrategy authStrategy) {
-        this.userService = UserService.getInstance(userRepository, authStrategy);
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/login")
@@ -61,25 +63,15 @@ public class UserController {
         return success ? ResponseEntity.ok("Password reset successful") : ResponseEntity.badRequest().body("User not found");
     }
 
+//    public List<TaskDTO> searchTasks(@RequestBody Map<String, String> request, HttpSession session) {
+//        String keyword = request.get("keyword");
 
-//    @PostMapping("/search")
-//    public List<TaskDTO> searchTasks(@RequestBody String keyword, HttpSession session) {
-//        Long userId = (Long) session.getAttribute("userId");
-//
-//        List<TaskDTO> tasks = taskClient.getTasksByUserId(userId);
-//
-//        SearchRequest request = new SearchRequest();
-//        request.setFullText(keyword);
-//        request.setUserId(userId);
-//        request.setTasks(tasks);
-//
-//        return searchClient.searchUserTasks(request);
-//    }
     @PostMapping("/search")
-    public List<TaskDTO> searchTasks(@RequestBody String keyword, HttpSession session) {
+    public List<TaskDTO> searchTasks(@RequestBody Map<String, String> request, HttpSession session) {
+        String keyword = request.get("keyword");
         Long userId = (Long) session.getAttribute("userId");
 
-        List<TaskDTO> tasks = taskClient.getTasksByUserId(userId);
+        List<TaskDTO> tasks = taskClient.getTasksByAssignee(userId);
 
         // Use the new SearchDTO
         SearchDTO searchDTO = new SearchDTO();

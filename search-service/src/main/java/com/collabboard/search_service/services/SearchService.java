@@ -7,14 +7,12 @@ import com.collabboard.search_service.models.SearchContext;
 import com.collabboard.search_service.models.SearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
-@EnableFeignClients(basePackages = "com.collabboard.search_service.clients")
 
 public class SearchService {
     private static final String SEARCH_CACHE_PREFIX = "search:";

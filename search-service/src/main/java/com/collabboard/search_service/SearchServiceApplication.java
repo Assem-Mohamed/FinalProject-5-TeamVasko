@@ -5,12 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableScheduling;
-//import org.springframework.cloud.openfeign.EnableFeignClients;
-
-@EnableCaching
-
 
 @SpringBootApplication
+@EnableCaching
+@EnableFeignClients(basePackages = "com.collabboard.search_service.Clients")
 
 public class SearchServiceApplication {
 

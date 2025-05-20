@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="comment-log-service" />
         <module name="common-dto" />
+        <module name="UserService" />
         <module name="search-service" />
         <module name="board-task-service" />
         <module name="api-gateway" />
@@ -24,7 +25,9 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="CommentLogService" options="-parameters" />
       <module name="Eureka" options="-parameters" />
+      <module name="UserService" options="-parameters" />
       <module name="api-gateway" options="-parameters" />
       <module name="board-task-service" options="-parameters" />
       <module name="comment-log-service" options="-parameters" />

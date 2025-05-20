@@ -15,6 +15,7 @@ import com.collabboard.board_task_service.mapper.TaskMapper;
 import com.collabboard.board_task_service.models.Task;
 import com.collabboard.board_task_service.services.TaskService;
 import org.example.TaskDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,8 @@ import java.util.stream.Collectors;
 public class TaskController {
 
     private final TaskService taskService;
+
+
 
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
@@ -99,10 +102,16 @@ public class TaskController {
     }
 
 
+
     @GetMapping("/assignee/{userId}")
-    public ResponseEntity<List<Task>> getTasksByAssignee(@PathVariable Long userId) {
-        return ResponseEntity.ok(taskService.getTasksByAssignee(userId));
+    public ResponseEntity<List<TaskDTO>> getTasksByAssignee(@PathVariable Long userId) {
+        List<Task> tasks = taskService.getTasksByAssignee(userId);
+        List<TaskDTO> taskDTOs = tasks.stream()
+                .map(TaskMapper::toDTO)
+                .toList();
+        return ResponseEntity.ok(taskDTOs);
     }
+
     @GetMapping("/filter")
     public ResponseEntity<List<Task>> filterTasks(
             @RequestParam(required = false) LocalDate dueDate,
