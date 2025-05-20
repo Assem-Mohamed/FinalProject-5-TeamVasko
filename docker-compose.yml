@@ -46,18 +46,7 @@ services:
       - collabboard-network
 
 
-  mongo:
-    image: mongo
-    container_name: mongo
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
 
-    ports:
-      - "27017:27017"
-    networks:
-      - collabboard-network
 
   nginx:
     image: nginx:latest
@@ -171,7 +160,17 @@ services:
       - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
       - SPRING_JPA_PROPERTIES_HIBERNATE_USE_SQL_COMMENTS=true
       - SERVER_PORT=8080
-
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    networks:
+      - collabboard-network
   # Comment & Log Service Instances
   comment-log-service1:
     build:
@@ -183,6 +182,7 @@ services:
       - collabboard-network
     depends_on:
       - rabbitmq
+      - mongo
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_APPLICATION_NAME=CommentLogService
@@ -234,9 +234,9 @@ services:
       - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/notificationdb?authSource=admin
       - SPRING_DATA_MONGODB_DATABASE=notificationdb
       - SPRING_RABBITMQ_HOST=rabbitmq
-      - SPRING_RABBITMQ_PORT=5672
-      - SPRING_RABBITMQ_USERNAME=guest
-      - SPRING_RABBITMQ_PASSWORD=guest
+#      - SPRING_RABBITMQ_PORT=5672
+#      - SPRING_RABBITMQ_USERNAME=guest
+#      - SPRING_RABBITMQ_PASSWORD=guest
 
 
   notification-service2:
@@ -252,9 +252,9 @@ services:
       - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/notificationdb?authSource=admin
       - SPRING_DATA_MONGODB_DATABASE=notificationdb
       - SPRING_RABBITMQ_HOST=rabbitmq
-      - SPRING_RABBITMQ_PORT=5672
-      - SPRING_RABBITMQ_USERNAME=guest
-      - SPRING_RABBITMQ_PASSWORD=guest
+#      - SPRING_RABBITMQ_PORT=5672
+#      - SPRING_RABBITMQ_USERNAME=guest
+#      - SPRING_RABBITMQ_PASSWORD=guest
   # Search Service Instances
   search-service1:
     build:

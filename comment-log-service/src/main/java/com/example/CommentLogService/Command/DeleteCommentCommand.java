@@ -3,20 +3,19 @@ package com.example.CommentLogService.Command;
 import com.example.CommentLogService.CommentCommand;
 import com.example.CommentLogService.Services.CommentService;
 
-public class DeleteCommentCommand implements CommentCommand {
-    private String id;
+public class DeleteCommentCommand implements CommentCommand<Void> {
 
-    public DeleteCommentCommand() {}
-    public DeleteCommentCommand(String id) {
-        this.id = id;
+    private final CommentService commentService;
+    private final String commentId;
+
+    public DeleteCommentCommand(CommentService commentService, String commentId) {
+        this.commentService = commentService;
+        this.commentId = commentId;
     }
 
     @Override
-    public void execute(CommentService service) {
-        service.deleteCommentById(id);
+    public Void execute() {
+        commentService.deleteCommentById(commentId);
+        return null;
     }
-
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
 }
-

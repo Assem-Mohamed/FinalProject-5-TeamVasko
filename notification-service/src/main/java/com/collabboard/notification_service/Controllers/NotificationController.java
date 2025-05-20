@@ -2,13 +2,10 @@ package com.collabboard.notification_service.Controllers;
 
 import com.collabboard.notification_service.Command.*;
 import com.collabboard.notification_service.Models.Notification;
-import com.collabboard.notification_service.NotificationCommand;
 import com.collabboard.notification_service.Services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -16,60 +13,47 @@ import java.util.List;
 @RequestMapping("/notifications")
 public class NotificationController {
 
-    private final CommandDispatcher commandDispatcher;
     private final NotificationService notificationService;
+    private final CommandExecutor commandExecutor;
 
     @Autowired
-    public NotificationController(CommandDispatcher commandDispatcher,
-                                  NotificationService notificationService) {
-        this.commandDispatcher = commandDispatcher;
+    public NotificationController(NotificationService notificationService,
+                                  CommandExecutor commandExecutor) {
         this.notificationService = notificationService;
-    }
-
-    @GetMapping
-    public ResponseEntity<String> testEndpoint() {
-        return ResponseEntity.ok("Notifications endpoint is alive");
+        this.commandExecutor = commandExecutor;
     }
 
     @PostMapping("/send")
-    public ResponseEntity<Void> sendNotification(@RequestParam Long userId, @RequestParam String message) {
-        NotificationCommand command = new SendNotificationCommand(userId, message);
-        commandDispatcher.dispatch("notification.exchange", "notification.routingKey", command);
-        return ResponseEntity.accepted().build();
+    public Notification sendNotification(@RequestParam Long userId, @RequestParam String message) {
+        SendNotificationCommand command = new SendNotificationCommand(notificationService, userId, message);
+        return commandExecutor.execute(command);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Notification>> getAll(@PathVariable Long userId) {
-        return ResponseEntity.ok(notificationService.getNotificationsForUser(userId));
+    public List<Notification> getAll(@PathVariable Long userId) {
+        return notificationService.getNotificationsForUser(userId); // optional: wrap in command
     }
 
     @GetMapping("/{userId}/unread")
-    public ResponseEntity<List<Notification>> getUnread(@PathVariable Long userId) {
-        return ResponseEntity.ok(notificationService.getUnreadNotifications(userId));
+    public List<Notification> getUnread(@PathVariable Long userId) {
+        return notificationService.getUnreadNotifications(userId); // optional: wrap in command
     }
 
     @PutMapping("/{id}/read")
-    public ResponseEntity<Notification> markAsRead(@PathVariable String id) {
-        NotificationCommand command = new MarkAsReadCommand(id);
-        commandDispatcher.dispatch("notification.exchange", "notification.routingKey", command);
-        return notificationService.markAsRead(id)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Notification not found"));
+    public Notification markAsRead(@PathVariable String id) {
+        MarkAsReadCommand command = new MarkAsReadCommand(notificationService, id);
+        return commandExecutor.execute(command);
     }
 
     @PutMapping("/{id}/unread")
-    public ResponseEntity<Notification> markAsUnread(@PathVariable String id) {
-        NotificationCommand command = new MarkAsUnReadCommand(id);
-        commandDispatcher.dispatch("notification.exchange", "notification.routingKey", command);
-        return notificationService.markAsUnread(id)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Notification not found"));
+    public Notification markAsUnread(@PathVariable String id) {
+        MarkAsUnReadCommand command = new MarkAsUnReadCommand(notificationService, id);
+        return commandExecutor.execute(command);
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteAllForUser(@PathVariable Long userId) {
-        NotificationCommand command = new DeleteNotificationsCommand(userId);
-        commandDispatcher.dispatch("notification.exchange", "notification.routingKey", command);
-        return ResponseEntity.noContent().build();
+    public void deleteAllForUser(@PathVariable Long userId) {
+        DeleteNotificationsCommand command = new DeleteNotificationsCommand(notificationService, userId);
+        commandExecutor.execute(command);
     }
 }

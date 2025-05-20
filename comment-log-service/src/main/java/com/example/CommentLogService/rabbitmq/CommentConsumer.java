@@ -14,7 +14,7 @@ public class CommentConsumer {
     }
 
     @RabbitListener(queues = RabbitMQConfig.COMMENT_QUEUE) // e.g., "comment_queue"
-    public void consumeComment(CommentMessage message) {
+    public void consumeComment(Comment message) {
         Comment comment = new Comment(
                 message.getTaskId(),
                 message.getAuthorId(),

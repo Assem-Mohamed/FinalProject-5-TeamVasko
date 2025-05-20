@@ -4,24 +4,20 @@ import com.example.CommentLogService.CommentCommand;
 import com.example.CommentLogService.Models.Comment;
 import com.example.CommentLogService.Services.CommentService;
 
-public class UpdateCommentCommand implements CommentCommand {
-    private String id;
-    private Comment updatedComment;
+public class UpdateCommentCommand implements CommentCommand<Comment> {
 
-    public UpdateCommentCommand() {}
-    public UpdateCommentCommand(String id, Comment updatedComment) {
-        this.id = id;
+    private final CommentService commentService;
+    private final String commentId;
+    private final Comment updatedComment;
+
+    public UpdateCommentCommand(CommentService commentService, String commentId, Comment updatedComment) {
+        this.commentService = commentService;
+        this.commentId = commentId;
         this.updatedComment = updatedComment;
     }
 
     @Override
-    public void execute(CommentService service) {
-        service.updateComment(id, updatedComment);
+    public Comment execute() {
+        return commentService.updateComment(commentId, updatedComment);
     }
-
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-    public Comment getUpdatedComment() { return updatedComment; }
-    public void setUpdatedComment(Comment updatedComment) { this.updatedComment = updatedComment; }
 }
-

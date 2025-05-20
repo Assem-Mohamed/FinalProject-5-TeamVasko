@@ -1,28 +1,23 @@
 package com.example.CommentLogService.Command;
 
 import com.example.CommentLogService.CommentCommand;
+import com.example.CommentLogService.Models.Comment;
 import com.example.CommentLogService.Services.CommentService;
 
-public class GetThreadedCommentsCommand implements CommentCommand {
-    private Long taskId;
+import java.util.List;
 
-    public GetThreadedCommentsCommand() {}
+public class GetThreadedCommentsCommand implements CommentCommand<List<Comment>> {
 
-    public GetThreadedCommentsCommand(Long taskId) {
+    private final CommentService commentService;
+    private final Long taskId;
+
+    public GetThreadedCommentsCommand(CommentService commentService, Long taskId) {
+        this.commentService = commentService;
         this.taskId = taskId;
     }
 
     @Override
-    public void execute(CommentService commentService) {
-        commentService.getThreadedComments(taskId);
-    }
-
-    public Long getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(Long taskId) {
-        this.taskId = taskId;
+    public List<Comment> execute() {
+        return commentService.getThreadedComments(taskId);
     }
 }
-

@@ -15,74 +15,54 @@ import java.util.List;
 @RequestMapping("/comments")
 public class CommentController {
 
-    private final CommandDispatcher commandDispatcher;
     private final CommentService commentService;
+    private final CommandExecutor commandExecutor;
 
-    @Autowired
-    public CommentController(CommandDispatcher commandDispatcher, CommentService commentService) {
-        this.commandDispatcher = commandDispatcher;
+
+    public CommentController(CommentService commentService, CommandExecutor commandExecutor) {
         this.commentService = commentService;
+        this.commandExecutor = commandExecutor;
     }
 
-        @PostMapping
-        public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
-            comment.setId(new ObjectId().toString());
-            CommentCommand command = new CreateCommentCommand(comment);
-            commandDispatcher.dispatch("comment.exchange", "comment.routingKey", command);
-            return ResponseEntity.accepted().body(comment);
-        }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Comment> getCommentById(@PathVariable String id) {
-        Comment comment = commentService.getCommentById(id);
-        if (comment != null) {
-            return ResponseEntity.ok(comment);
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    @GetMapping("/task/{taskId}")
-    public ResponseEntity<List<Comment>> getCommentsByTaskId(@PathVariable Long taskId) {
-        return ResponseEntity.ok(commentService.getCommentsByTaskId(taskId));
+    @PostMapping
+    public Comment createComment(@RequestBody Comment comment) {
+        CreateCommentCommand command = new CreateCommentCommand(commentService, comment);
+        return commandExecutor.execute(command);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Comment> updateComment(@PathVariable String id, @RequestBody Comment updatedComment) {
-        CommentCommand command = new UpdateCommentCommand(id, updatedComment);
-        commandDispatcher.dispatch("comment.exchange", "comment.routingKey", command);
-        return ResponseEntity.ok(commentService.updateComment(id, updatedComment));
+    public Comment updateComment(@PathVariable String id, @RequestBody Comment updatedComment) {
+        UpdateCommentCommand command = new UpdateCommentCommand(commentService, id, updatedComment);
+        return commandExecutor.execute(command);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable String id) {
-        CommentCommand command = new DeleteCommentCommand(id);
-        commandDispatcher.dispatch("comment.exchange", "comment.routingKey", command);
-        return ResponseEntity.noContent().build();
+    public void deleteComment(@PathVariable String id) {
+        DeleteCommentCommand command = new DeleteCommentCommand(commentService, id);
+        commandExecutor.execute(command);
+    }
+
+    @GetMapping("/task/{taskId}")
+    public List<Comment> getCommentsByTaskId(@PathVariable Long taskId) {
+        return commentService.getCommentsByTaskId(taskId); // not using command pattern here, could be added
+    }
+
+    @GetMapping("/threaded/{taskId}")
+    public List<Comment> getThreadedComments(@PathVariable Long taskId) {
+        GetThreadedCommentsCommand command = new GetThreadedCommentsCommand(commentService, taskId);
+        return commandExecutor.execute(command);
     }
 
     @PostMapping("/{id}/pin")
-    public ResponseEntity<Comment> pinComment(@PathVariable String id) {
-        CommentCommand command = new PinCommentCommand(id);
-        commandDispatcher.dispatch("comment.exchange", "comment.routingKey", command);
-        Comment comment = commentService.pinComment(id);
-        if (comment != null) return ResponseEntity.ok(comment);
-        else return ResponseEntity.notFound().build();
+    public Comment pinComment(@PathVariable String id) {
+        PinCommentCommand command = new PinCommentCommand(commentService, id);
+        return commandExecutor.execute(command);
     }
 
     @PostMapping("/{id}/unpin")
-    public ResponseEntity<Comment> unpinComment(@PathVariable String id) {
-        CommentCommand command = new UnpinCommentCommand(id);
-        commandDispatcher.dispatch("comment.exchange", "comment.routingKey", command);
-        Comment comment = commentService.unpinComment(id);
-        if (comment != null) return ResponseEntity.ok(comment);
-        else return ResponseEntity.notFound().build();
+    public Comment unpinComment(@PathVariable String id) {
+        UnpinCommentCommand command = new UnpinCommentCommand(commentService, id);
+        return commandExecutor.execute(command);
     }
-
-    @GetMapping("/task/{taskId}/threaded")
-    public ResponseEntity<List<Comment>> getThreadedComments(@PathVariable Long taskId) {
-        // Note: optionally make this async only if needed
-        return ResponseEntity.ok(commentService.getThreadedComments(taskId));
-    }
-
 
 }
