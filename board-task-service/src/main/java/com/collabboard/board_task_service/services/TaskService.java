@@ -100,6 +100,7 @@ public class TaskService {
 
     // Update priority
     public Task updatePriority(Long taskId, Priority newPriority) {
+        System.out.println("test");
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NoSuchElementException("Task not found"));
 
@@ -107,7 +108,8 @@ public class TaskService {
         Task saved = taskRepository.save(task);
 
         notifyAssignees(saved,
-                "Notification: task \"" + saved.getTitle() + "\" priority has been updated to " + newPriority);
+                "Notification: task " + saved.getTitle() + " priority has been updated to " + newPriority);
+        System.out.println("test1");
         return saved;
     }
 

@@ -28,9 +28,8 @@ public class UserController {
     @Autowired private TaskClient taskClient;
     @Autowired private SearchClient searchClient;
 
-    @Autowired
-    public UserController(UserRepository userRepository, AuthStrategy authStrategy) {
-        this.userService = UserService.getInstance(userRepository, authStrategy);
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/login")

@@ -26,6 +26,7 @@ public class NotificationListener {
 
     @RabbitListener(queues = "notification_queue")
     public void listen(String message) {
+        System.out.println("Received notification message: " + message);
         try {
             NotificationMessageDTO dto = objectMapper.readValue(message, NotificationMessageDTO.class);
 

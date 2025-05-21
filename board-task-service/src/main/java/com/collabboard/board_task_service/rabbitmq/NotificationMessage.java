@@ -1,22 +1,22 @@
 package com.collabboard.board_task_service.rabbitmq;
 
 public class NotificationMessage {
-    private Long recipientId;
+    private Long userId;
     private String message;
 
     public NotificationMessage() {}
 
-    public NotificationMessage(Long recipientId, String message) {
-        this.recipientId = recipientId;
+    public NotificationMessage(Long userId, String message) {
+        this.userId = userId;
         this.message = message;
     }
 
-    public Long getRecipientId() {
-        return recipientId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setRecipientId(Long recipientId) {
-        this.recipientId = recipientId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getMessage() {

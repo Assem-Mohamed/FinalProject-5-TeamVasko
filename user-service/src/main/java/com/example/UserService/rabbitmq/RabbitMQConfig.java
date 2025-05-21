@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    public static final String COMMENT_QUEUE = "user_comment";
+    public static final String COMMENT_QUEUE = "comment_queue";
     public static final String EXCHANGE = "shared_exchange";
     public static final String COMMENT_ROUTING_KEY = "comment_routing_key";
 

@@ -18,28 +18,24 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private static UserService instance;
 
     private final UserRepository userRepository;
+    private SearchClient searchClient;
+    private RabbitMQProducer rabbitMQProducer;
     private final AuthStrategy authStrategy;
 
     @Autowired
-    private SearchClient searchClient;
-
-    @Autowired
-    private RabbitMQProducer rabbitMQProducer;
+    public UserService(UserRepository userRepository, AuthStrategy authStrategy, SearchClient searchClient, RabbitMQProducer rabbitMQProducer) {
+        this.userRepository = userRepository;
+        this.authStrategy = authStrategy;
+        this.searchClient = searchClient;
+        this.rabbitMQProducer = rabbitMQProducer;
+    }
 
 
     private UserService(UserRepository userRepository, AuthStrategy authStrategy) {
         this.userRepository = userRepository;
         this.authStrategy = authStrategy;
-    }
-
-    public static UserService getInstance(UserRepository repo, AuthStrategy strategy) {
-        if (instance == null) {
-            instance = new UserService(repo, strategy);
-        }
-        return instance;
     }
 
     public boolean login(String email, String password) {
