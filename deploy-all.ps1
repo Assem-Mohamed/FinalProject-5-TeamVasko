@@ -26,7 +26,7 @@ foreach ($service in $services) {
     }
 
     Write-Host "Building Docker image for $service"
-    docker build -t assem1908/$service .
+    docker build -t abdelrahman721/$service .
 
     if ($LASTEXITCODE -ne 0) {
         Write-Host "Docker build failed for $service." -ForegroundColor Red
@@ -35,7 +35,7 @@ foreach ($service in $services) {
     }
 
     Write-Host "Pushing Docker image for $service"
-    docker push assem1908/$service
+    docker push abdelrahman721/$service
 
     Pop-Location
     Write-Host "$service deployed successfully." -ForegroundColor Green
