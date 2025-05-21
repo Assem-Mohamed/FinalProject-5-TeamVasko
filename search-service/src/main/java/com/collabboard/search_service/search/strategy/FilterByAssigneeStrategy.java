@@ -20,10 +20,17 @@ public class FilterByAssigneeStrategy implements SearchStrategy {
                         Field field = TaskDTO.class.getDeclaredField("assignee");
                         field.setAccessible(true);
                         Object value = field.get(task);
-                        return request.getAssignee().equalsIgnoreCase(String.valueOf(value));
+
+                        // Null check to avoid NullPointerException
+                        if (value instanceof Long && request.getAssignee() != null) {
+                            return request.getAssignee().equals((Long) value);
+                        } else {
+                            return false;
+                        }
                     } catch (Exception e) {
                         return false;
                     }
+
                 })
                 .collect(Collectors.toList());
     }

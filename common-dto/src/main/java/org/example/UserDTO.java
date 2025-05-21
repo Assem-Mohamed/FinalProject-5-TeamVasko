@@ -6,15 +6,16 @@ public class UserDTO {
     private String email;
     private String password;
 
-    public UserDTO() {
-
-    }
 
     public UserDTO(Long id, String username, String email, String password) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public UserDTO() {
+
     }
 
     public String getPassword() {

@@ -1,13 +1,13 @@
-C:\D\GUC\Semester 10\ACL\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\FilterByAssigneeStrategy.java
-C:\D\GUC\Semester 10\ACL\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\SearchStrategy.java
-C:\D\GUC\Semester 10\ACL\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\SortByFieldStrategy.java
-C:\D\GUC\Semester 10\ACL\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\FilterByPriorityStrategy.java
-C:\D\GUC\Semester 10\ACL\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\FilterByDueDateStrategy.java
-C:\D\GUC\Semester 10\ACL\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\controllers\SearchController.java
-C:\D\GUC\Semester 10\ACL\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\SearchServiceApplication.java
-C:\D\GUC\Semester 10\ACL\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\models\SearchRequest.java
-C:\D\GUC\Semester 10\ACL\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\services\SearchService.java
-C:\D\GUC\Semester 10\ACL\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\FullTextSearchStrategy.java
-C:\D\GUC\Semester 10\ACL\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\Clients\TaskClient.java
-C:\D\GUC\Semester 10\ACL\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\config\RedisCacheConfig.java
-C:\D\GUC\Semester 10\ACL\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\models\SearchContext.java
+D:\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\models\SearchRequest.java
+D:\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\FilterByDueDateStrategy.java
+D:\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\SearchStrategy.java
+D:\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\services\SearchService.java
+D:\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\FullTextSearchStrategy.java
+D:\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\SortByFieldStrategy.java
+D:\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\SearchServiceApplication.java
+D:\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\config\RedisCacheConfig.java
+D:\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\controllers\SearchController.java
+D:\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\FilterByPriorityStrategy.java
+D:\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\Clients\TaskClient.java
+D:\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\search\strategy\FilterByAssigneeStrategy.java
+D:\FinalProject-5-TeamVasko\search-service\src\main\java\com\collabboard\search_service\models\SearchContext.java

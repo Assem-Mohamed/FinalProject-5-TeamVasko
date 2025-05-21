@@ -1,7 +1,9 @@
 package com.collabboard.search_service.controllers;
 
+import com.collabboard.search_service.mapper.SearchMapper;
 import com.collabboard.search_service.models.SearchRequest;
 import com.collabboard.search_service.services.SearchService;
+import org.example.SearchDTO;
 import org.example.TaskDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +20,34 @@ public class SearchController {
     private SearchService searchService;
 
     @PostMapping
-    public ResponseEntity<List<TaskDTO>> searchTasks(
-            @RequestBody SearchRequest request,
+    public List<TaskDTO> searchTasks(
+            @RequestBody SearchDTO dto,
             HttpSession session
     ) {
         Long userId = (Long) session.getAttribute("userId");
 
-        if (userId == null) {
-            return ResponseEntity.status(401).body(null); // Unauthorized
-        }
+        // Override userId from session if needed
+        dto.setUserId(userId);
 
-        List<TaskDTO> results = searchService.searchTasks(request, userId);
-        return ResponseEntity.ok(results);
+        // (Optional) Map to internal SearchRequest model if you still want to work with that inside the service
+        SearchRequest request = SearchMapper.toRequest(dto);
+
+        // Pass request to service
+        return searchService.searchTasks(request, userId);
     }
+    @PostMapping("/filter")
+    public List<TaskDTO> filterTasks(
+            @RequestBody SearchDTO dto,
+            HttpSession session
+    ) {
+        Long userId = (Long) session.getAttribute("userId");
+        dto.setUserId(userId);
+
+        SearchRequest request = SearchMapper.toRequest(dto);
+        return searchService.filterTasks(request.getDueDate(),request.getUserId(),request.getPriority()); // You need to implement this in the service
+    }
+
+
+
+
 }

@@ -32,6 +32,13 @@ services:
     networks:
       - collabboard-network
 
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: redisInsight
+    ports:
+      - 5540:5540
+    restart: always
+
   rabbitmq:
     image: rabbitmq:4.0-management
     container_name: rabbitmq
@@ -48,26 +55,26 @@ services:
 
 
 
-  nginx:
-    image: nginx:latest
-    container_name: nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./volumes/nginx/nginx.conf:/etc/nginx/nginx.conf
-    depends_on:
-      - board-task-service1
-      - board-task-service2
-      - user-service1
-      - user-service2
-      - comment-log-service1
-      - comment-log-service2
-      - notification-service1
-      - notification-service2
-      - search-service1
-      - search-service2
-    networks:
-      - collabboard-network
+#  nginx:
+#    image: nginx:latest
+#    container_name: nginx
+#    ports:
+#      - "80:80"
+#    volumes:
+#      - ./volumes/nginx/nginx.conf:/etc/nginx/nginx.conf
+#    depends_on:
+#      - board-task-service1
+#      - board-task-service2
+#      - user-service1
+#      - user-service2
+#      - comment-log-service1
+#      - comment-log-service2
+#      - notification-service1
+#      - notification-service2
+#      - search-service1
+#      - search-service2
+#    networks:
+#      - collabboard-network
 
   # Board & Task Service Instances
   board-task-service1:
