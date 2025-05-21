@@ -10,6 +10,7 @@
         <module name="common-dto" />
         <module name="UserService" />
         <module name="search-service" />
+        <module name="CommentLogService" />
         <module name="board-task-service" />
         <module name="api-gateway" />
         <module name="user-service" />

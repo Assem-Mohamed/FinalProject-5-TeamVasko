@@ -1,6 +1,7 @@
 package com.collabboard.search_service.models;
 
 
+import org.example.Priority;
 import org.example.TaskDTO;
 import java.time.LocalDate;
 import java.util.List;
@@ -9,8 +10,8 @@ public class SearchRequest {
     private Long userId;
     private String fullText;
     private LocalDate dueDate;
-    private String priority;
-    private String assignee;
+    private Priority priority;
+    private Long assignee;
     private String sortBy;
     private List<TaskDTO> tasks;
 
@@ -19,10 +20,10 @@ public class SearchRequest {
     public void setFullText(String fullText) { this.fullText = fullText; }
     public LocalDate getDueDate() { return dueDate; }
     public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
-    public String getPriority() { return priority; }
-    public void setPriority(String priority) { this.priority = priority; }
-    public String getAssignee() { return assignee; }
-    public void setAssignee(String assignee) { this.assignee = assignee; }
+    public Priority getPriority() { return priority; }
+    public void setPriority(Priority priority) { this.priority = priority; }
+    public Long getAssignee() { return assignee; }
+    public void setAssignee(Long assignee) { this.assignee = assignee; }
     public String getSortBy() { return sortBy; }
     public void setSortBy(String sortBy) { this.sortBy = sortBy; }
 

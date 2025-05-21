@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.util.List;
 
-@FeignClient(name = "task-service", url = "http://board-task-service1:8081")
+@FeignClient(name = "task-service", url = "http://localhost:8081/api/tasks")
 public interface TaskClient {
 
-    @GetMapping("/api/tasks/filter")
+    @GetMapping("/filter")
     List<TaskDTO> filterTasks(
             @RequestParam(required = false) LocalDate dueDate,
             @RequestParam(required = false) Long assigneeId,

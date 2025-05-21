@@ -1,7 +1,7 @@
 package com.collabboard.board_task_service.models;
 
-import com.collabboard.board_task_service.enums.TaskType;
-import com.collabboard.board_task_service.enums.Status;
+import org.example.TaskType;
+import org.example.Status;
 import jakarta.persistence.*;
 import org.example.Priority;
 
@@ -99,11 +99,11 @@ public class Task {
         this.status = status;
     }
 
-    public com.collabboard.board_task_service.enums.TaskType getTaskType() {
+    public TaskType getTaskType() {
         return taskType;
     }
 
-    public void setTaskType(com.collabboard.board_task_service.enums.TaskType taskType) {
+    public void setTaskType(TaskType taskType) {
         this.taskType = taskType;
     }
 

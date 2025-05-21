@@ -4,8 +4,8 @@ package com.collabboard.board_task_service.services;
 import com.collabboard.board_task_service.builders.TaskBuilder;
 import org.example.Priority;
 
-import com.collabboard.board_task_service.enums.Status;
-import com.collabboard.board_task_service.enums.TaskType;
+import org.example.Status;
+import org.example.TaskType;
 import com.collabboard.board_task_service.factories.BaseTask;
 import com.collabboard.board_task_service.factories.BugTaskFactory;
 import com.collabboard.board_task_service.factories.ImprovementTaskFactory;
@@ -175,6 +175,9 @@ public class TaskService {
     }
 
     public List<Task> getTasksByAssignee(Long userId) {
+        System.out.println("Finding tasks assigned to user ID TASKSERVICE: " + userId);
+
+
         return taskRepository.findByAssigneeIdsContaining(userId);
     }
 
@@ -188,6 +191,9 @@ public class TaskService {
     }
     public List<Task> filterTasks(LocalDate dueDate, Long assigneeId, Priority priority) {
         List<Task> tasks = taskRepository.findAll();
+        System.out.println("due date:" + dueDate);
+        System.out.println("priority:" + priority);
+        System.out.println("assignee id:" + assigneeId);
 
         if (dueDate != null) {
             tasks = tasks.stream()

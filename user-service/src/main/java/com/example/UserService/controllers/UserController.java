@@ -4,6 +4,7 @@ import com.example.UserService.Clients.SearchClient;
 import com.example.UserService.Clients.TaskClient;
 import com.example.UserService.services.UserService;
 import jakarta.servlet.http.HttpSession;
+import org.example.Priority;
 import org.example.TaskDTO;
 import org.example.SearchDTO;
 
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,10 +28,7 @@ public class UserController {
     @Autowired private TaskClient taskClient;
     @Autowired private SearchClient searchClient;
 
-//    @Autowired
-//    public UserController(UserRepository userRepository, AuthStrategy authStrategy) {
-//        this.userService = UserService.getInstance(userRepository, authStrategy);
-//    }
+
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
@@ -44,7 +43,10 @@ public class UserController {
         if (success) {
             Long userId = userService.getUserIdByEmail(email); // implement this method
             session.setAttribute("userId", userId); // Store user ID in session
+            System.out.println("Login request: " + email);
+            System.out.println("UserId stored in session: " + userId);
             return ResponseEntity.ok("Login successful");
+
         } else {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
@@ -70,17 +72,64 @@ public class UserController {
     public List<TaskDTO> searchTasks(@RequestBody Map<String, String> request, HttpSession session) {
         String keyword = request.get("keyword");
         Long userId = (Long) session.getAttribute("userId");
+        System.out.println("Received keyword USERCONTR: " + keyword);
+        System.out.println("UserId from session USERCONTR: " + userId);
+
 
         List<TaskDTO> tasks = taskClient.getTasksByAssignee(userId);
+//        System.out.println("Tasks from TaskService USERCONTR: " + tasks.getBody());
 
         // Use the new SearchDTO
         SearchDTO searchDTO = new SearchDTO();
         searchDTO.setFullText(keyword);
         searchDTO.setUserId(userId);
         searchDTO.setTasks(tasks);
+        System.out.println("SearchDTO being sent to SearchService:USERCONTR ");
+        System.out.println("FullText: USERCONTR" + searchDTO.getFullText());
+        System.out.println("UserId: USERCONTR" + searchDTO.getUserId());
+//        System.out.println("Tasks: USERCONTR" + searchDTO.getTasks().getBody());
 
-        return searchClient.searchUserTasks(searchDTO);
+        return searchClient.searchTasks(searchDTO);
     }
+    @PostMapping("/filter")
+    public List<TaskDTO> filterTasks(
+            @RequestParam(required = false) LocalDate dueDate,
+            @RequestParam(required = false) Long assigneeId,
+            @RequestParam(required = false) Priority priority,
+            HttpSession session
+    ) {
+
+        Long userId = (Long) session.getAttribute("userId");
+
+        List<TaskDTO> tasks = taskClient.getTasksByAssignee(userId);
+
+        SearchDTO searchDTO = new SearchDTO();
+        searchDTO.setUserId(userId);
+        searchDTO.setTasks(tasks);
+        searchDTO.setPriority(priority);
+        searchDTO.setDueDate(dueDate);
+        searchDTO.setAssignee(assigneeId);
+
+        return searchClient.filterTasks(searchDTO);
+    }
+    @PostMapping("/sort")
+    public List<TaskDTO> sortedSearchTasks(@RequestBody Map<String, String> request, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+
+        String keyword = request.get("keyword");
+        String sortBy = request.get("sortBy");
+
+        List<TaskDTO> tasks = taskClient.getTasksByAssignee(userId);
+
+        SearchDTO searchDTO = new SearchDTO();
+        searchDTO.setFullText(keyword);
+        searchDTO.setUserId(userId);
+        searchDTO.setTasks(tasks);
+        searchDTO.setSortBy(sortBy);
+
+        return searchClient.searchTasks(searchDTO);
+    }
+
 
 
     @PostMapping("/comments")

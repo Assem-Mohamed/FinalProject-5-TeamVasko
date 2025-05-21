@@ -1,21 +1,14 @@
 package com.collabboard.board_task_service.controllers;
 
 
-import com.collabboard.board_task_service.builders.TaskBuilder;
-import com.collabboard.board_task_service.factories.TaskFactory;
-
-
-import com.collabboard.board_task_service.enums.TaskType;
+import com.collabboard.board_task_service.mapper.TaskMapper;
+import org.example.TaskDTO;
+import org.example.TaskType;
 
 import com.collabboard.board_task_service.models.Task;
 import com.collabboard.board_task_service.services.TaskService;
 import org.example.Priority;
 
-import com.collabboard.board_task_service.mapper.TaskMapper;
-import com.collabboard.board_task_service.models.Task;
-import com.collabboard.board_task_service.services.TaskService;
-import org.example.TaskDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -102,25 +95,38 @@ public class TaskController {
     }
 
 
-
+//    @GetMapping("/assignee/{userId}")
+//    public ResponseEntity<List<Task>> getTasksByAssignee(@PathVariable Long userId) {
+//        return ResponseEntity.ok(taskService.getTasksByAssignee(userId));
+//    }
     @GetMapping("/assignee/{userId}")
-    public ResponseEntity<List<TaskDTO>> getTasksByAssignee(@PathVariable Long userId) {
+    public List<TaskDTO> getTasksByAssignee(@PathVariable Long userId) {
+        System.out.println("Fetching tasks for assignee TASKCONTROLLER: " + userId);
         List<Task> tasks = taskService.getTasksByAssignee(userId);
+        System.out.println("Fetched Tasks TASKCONTR: " + tasks);
+
         List<TaskDTO> taskDTOs = tasks.stream()
                 .map(TaskMapper::toDTO)
                 .toList();
-        return ResponseEntity.ok(taskDTOs);
+        return taskDTOs;
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<Task>> filterTasks(
+    public List<TaskDTO> filterTasks(
             @RequestParam(required = false) LocalDate dueDate,
             @RequestParam(required = false) Long assigneeId,
             @RequestParam(required = false) Priority priority) {
 
-        List<Task> filteredTasks = taskService.filterTasks(dueDate, assigneeId, priority);
-        return ResponseEntity.ok(filteredTasks);
+        // Get filtered Task entities from the service
+        List<Task> tasks = taskService.filterTasks(dueDate, assigneeId, priority);
+
+        // Map to TaskDTOs in the controller using TaskMapper
+
+        return tasks.stream()
+                .map(TaskMapper::toDTO)
+                .collect(Collectors.toList());
     }
+
 
 
 

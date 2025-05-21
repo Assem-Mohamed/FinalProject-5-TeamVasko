@@ -10,16 +10,19 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Component
 public class SortByFieldStrategy implements SearchStrategy {
     @Override
     public List<TaskDTO> search(List<TaskDTO> tasks, SearchRequest request) {
-        if (request.getSortBy() == null || request.getSortBy().isEmpty()) return tasks;
-
         String sortField = request.getSortBy();
 
+        if (sortField == null || sortField.isEmpty()) {
+            return tasks;
+        }
+
         try {
-            Field field = TaskDTO.class.getDeclaredField(sortField);
+            Field field = TaskDTO.class.getDeclaredField(sortField.trim());
             field.setAccessible(true);
 
             Comparator<TaskDTO> comparator = Comparator.comparing(task -> {
@@ -29,12 +32,15 @@ public class SortByFieldStrategy implements SearchStrategy {
                 } catch (IllegalAccessException e) {
                     return null;
                 }
-            });
+            }, Comparator.nullsLast(Comparator.naturalOrder()));
 
-            return tasks.stream().sorted(comparator).collect(Collectors.toList());
+            return tasks.stream()
+                    .sorted(comparator)
+                    .collect(Collectors.toList());
 
         } catch (NoSuchFieldException e) {
-            return tasks; // fallback to unsorted
+            // If the sort field doesn't exist, just return unsorted
+            return tasks;
         }
     }
 }

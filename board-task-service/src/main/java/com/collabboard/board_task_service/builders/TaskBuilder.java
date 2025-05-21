@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.collabboard.board_task_service.enums.Status;
-import com.collabboard.board_task_service.enums.TaskType;
+import org.example.Status;
+import org.example.TaskType;
 import com.collabboard.board_task_service.models.Task;
 import org.example.Priority;
 

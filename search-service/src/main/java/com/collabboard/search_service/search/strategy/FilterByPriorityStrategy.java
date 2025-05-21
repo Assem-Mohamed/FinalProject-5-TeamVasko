@@ -13,17 +13,9 @@ public class FilterByPriorityStrategy implements SearchStrategy {
     @Override
     public List<TaskDTO> search(List<TaskDTO> tasks, SearchRequest request) {
         if (request.getPriority() == null) return tasks;
+
         return tasks.stream()
-                .filter(task -> {
-                    try {
-                        Field field = TaskDTO.class.getDeclaredField("priority");
-                        field.setAccessible(true);
-                        Object value = field.get(task);
-                        return request.getPriority().equalsIgnoreCase(String.valueOf(value));
-                    } catch (Exception e) {
-                        return false;
-                    }
-                })
+                .filter(task -> request.getPriority().equals(task.getPriority()))
                 .collect(Collectors.toList());
     }
 }
